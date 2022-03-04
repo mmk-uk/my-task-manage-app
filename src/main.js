@@ -11,6 +11,7 @@ import mdiVue from 'mdi-vue/v2'
 import * as mdijs from '@mdi/js'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import 'swiper/css/swiper.css'
+import VModal from 'vue-js-modal'
 
 
 
@@ -19,6 +20,8 @@ Vue.use(mdiVue, {
   icons: mdijs
 })
 Vue.use(VueAwesomeSwiper)
+
+Vue.use(VModal);
 
 Vue.config.productionTip = false
 

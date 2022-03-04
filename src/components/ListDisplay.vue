@@ -3,10 +3,12 @@
         <div class="category-label">
             <el-row>
                 <el-col :span="20" class="flexbox3">
-                    <span style="font-size:190%;font-weight: 900;">
+                    <span style="font-size:190%;font-weight: 900;margin-top:10px;margin-left:5px">
                         {{categorytitle}}
                     </span>
+                    <!--
                     <span style="font-size:80%">タスク: 3 イベント: 2</span>
+                    -->
                     
                 </el-col>
                 <el-col :span="4" style="text-align: right;">
@@ -69,6 +71,12 @@
                     </el-col>
                 </el-row>
             </div>
+
+
+
+
+
+
          
         </div>
 
@@ -115,7 +123,7 @@ export default {
     height: 100%;
     margin-left: 10px;
     margin-right: 5px;
-    margin-top: 180px;
+    margin-top: 160px;
 
 }
 .category-label{

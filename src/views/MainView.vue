@@ -3,17 +3,17 @@
      
 
           <!-- ヘッダー -->
-            <el-header height="120px">
-                <el-row style="height: 80px;">
-                    <el-col :span="4" style="text-align: left; height: 80px; line-height: 170px;"> 
+            <el-header height="100px">
+                <el-row style="height: 60px;">
+                    <el-col :span="4" style="text-align: left; height: 60px; line-height: 135px;"> 
                         <el-button type="primary" circle class="my-button">
                             <mdicon name="menu" size="30" />
                         </el-button>
                     </el-col>
-                    <el-col :span="16" style="text-align: center; height: 80px; line-height: 170px;"> 
+                    <el-col :span="16" style="text-align: center; height: 60px; line-height: 135px;"> 
                         <span style="font-size:110%;">2022年2月24日</span>
                     </el-col>
-                    <el-col :span="4" style="text-align: right; height: 80px; line-height: 170px;"> 
+                    <el-col :span="4" style="text-align: right; height: 60px; line-height: 135px;"> 
                         <el-button type="primary" circle class="my-button" @click="toCategoryView">
                             <mdicon name="tab" size="30" />
                         </el-button>
@@ -109,14 +109,15 @@ export default {
                 centeredSlides: true,
                 slidesPerView: 5,
                 slideToClickedSlide: true,
-                freeMode:true
+                freeMode:true,
+                initialSlide: 1
             }
         }
     },
     mounted() {
         window.addEventListener("orientationchange", this.changeDirection);
         this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
-        this.$refs.swiperThumbs.$swiper.slideTo(1);
+        //this.$refs.swiperThumbs.$swiper.slideTo(1);
         //this.$nextTick(() => {
 			//const swiperTop = this.$refs.swiperTop.$swiper
 			//const swiperThumbs = this.$refs.swiperThumbs.$swiper
@@ -208,7 +209,7 @@ export default {
 }
 .el-main {
   
-  padding: 120px 5px 5px;
+  padding: 100px 5px 5px;
   height: 110%;
   width: 100%;
   position: fixed;
@@ -232,7 +233,7 @@ export default {
      height: 60px;
      position: fixed;
      width: 100%;
-     margin-top: 120px;
+     margin-top: 100px;
      margin-left: -5px;
 }
 
