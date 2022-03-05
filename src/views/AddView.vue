@@ -218,7 +218,7 @@ export default {
 
         },
         toMainView(){
-            this.$router.push('/');
+            this.$router.push('/main');
         }
     }
 }

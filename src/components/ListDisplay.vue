@@ -77,6 +77,153 @@
 
 
 
+            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>            <div class="list-box">
+                <el-row style="height: 60px; margin-bottom: 8px;">
+                    <el-col :span="2" style="height: 60px;">
+                        <div class="flexbox2">
+                            <span style="font-weight: bold">2</span>
+                            <span style="font-size:70%">(水)</span>
+                        </div>
+
+                    </el-col>
+                    <el-col :span="22" style="height: 60px;">
+                         <EventBox></EventBox> 
+                    </el-col>
+                </el-row>
+            </div>
+
+
+
          
         </div>
 

@@ -239,7 +239,7 @@ export default {
     },
     methods:{
         toMainView(){
-            this.$router.push('/');
+            this.$router.push('/main');
         }
     }
 }

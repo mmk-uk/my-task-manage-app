@@ -6,7 +6,7 @@
             <el-header height="100px">
                 <el-row style="height: 60px;">
                     <el-col :span="4" style="text-align: left; height: 60px; line-height: 135px;"> 
-                        <el-button type="primary" circle class="my-button">
+                        <el-button type="primary" circle class="my-button" @click="toConfigView">
                             <mdicon name="menu" size="30" />
                         </el-button>
                     </el-col>
@@ -162,6 +162,9 @@ export default {
         },
         toAddView(){
             this.$router.push('/add');
+        },
+        toConfigView(){
+            this.$router.push('/config');
         },
         changeDirection(){
             //console.log("端末の向きが " + screen.orientation.angle + "になりました。");
