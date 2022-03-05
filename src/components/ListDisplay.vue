@@ -1,4 +1,5 @@
 <template>
+    <div class="scroll-display"  :id="'scrollList'+slideNum">
     <div class="list-display">
         <div class="category-label">
             <el-row>
@@ -76,154 +77,6 @@
 
 
 
-
-            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>
-
-
-
          
         </div>
 
@@ -232,6 +85,7 @@
         
 
     </div>
+    </div>
 </template>
 
 <script>
@@ -239,7 +93,7 @@ import TaskBox from "@/components/TaskBox";
 import EventBox from "@/components/EventBox";
 
 export default {
-     props: ["categorytitle"],
+     props: ["slideNum","categorytitle"],
     components: {
       TaskBox,
       EventBox
@@ -256,6 +110,9 @@ export default {
         }
     },
     methods:{
+        moveTop(){
+            scrollTo(0,0)
+        },
         toArchiveView(){
             this.$router.push('/archive');
         }
@@ -265,9 +122,17 @@ export default {
 </script>
 
 <style scoped>
+
+.scroll-display{
+    height: 100vh;
+    
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
 .list-display{
     width: 96%;
-    height: 100%;
+    
     margin-left: 10px;
     margin-right: 5px;
     margin-top: 160px;
@@ -290,30 +155,7 @@ export default {
 
 }
 
-.list-box{
-}
 
-.scroll-content {
-    z-index: 9999;
-  height:100%;
-
-}
-
-.swiperList{
-    height: 100%;
-}
-
-.swiperList .swiper-wrapper{
-    height: 100%;
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-}
-
-.swiperList .swiper-wrapper .swiper-slide{
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
-    
-}
 
 
 

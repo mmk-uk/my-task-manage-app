@@ -67,12 +67,14 @@
                 @slideChange="onSwipe"
                 @touchStart="swipeStart"
                 @touchMove="swipeBackAll"
+                @slideNextTransitionEnd="swipeNextEnd"
+                @slidePrevTransitionEnd="swipePrevEnd"
             >
                 <swiper-slide>
-                        <ListDisplay :categorytitle="'全て'"></ListDisplay>
+                        <ListDisplay :slideNum=0 :categorytitle="'全て'"></ListDisplay>
                 </swiper-slide>
-                <swiper-slide v-for="(slide) in slides" :key="slide[1]">
-                        <ListDisplay :categorytitle="slide[0]"></ListDisplay>
+                <swiper-slide v-for="(slide,i) in slides" :key="slide[1]">
+                        <ListDisplay :slideNum=i+1 :categorytitle="slide[0]"></ListDisplay>
                 </swiper-slide>
             </swiper>
 
@@ -157,6 +159,18 @@ export default {
             
 
         },
+        swipeNextEnd(){
+            //console.log(this.$refs.swiperTop.$swiper.activeIndex -1)
+            let num = this.$refs.swiperTop.$swiper.activeIndex -1
+            var element = document.getElementById("scrollList"+ num)
+            element.scrollTo(0,0)
+        },
+        swipePrevEnd(){
+            //console.log(this.$refs.swiperTop.$swiper.activeIndex +1)
+            let num = this.$refs.swiperTop.$swiper.activeIndex + 1
+            var element = document.getElementById("scrollList"+ num)
+            element.scrollTo(0,0)
+        },
         toCategoryView(){
             this.$router.push('/categorymanage');
         },
@@ -231,11 +245,13 @@ export default {
 }
 
 
+
+
 .tab-area {
     z-index: 8900;
      height: 60px;
      position: fixed;
-     width: 100%;
+     width: calc(100% + 5px);
      margin-top: 100px;
      margin-left: -5px;
 }
@@ -319,5 +335,17 @@ export default {
     border:none;
 }
 
+
+</style>
+
+<style>
+
+.main-swiper .swiper-wrapper{
+   min-height: 100vh;
+}
+
+.main-swiper .swiper-wrapper .swiper-slide{
+   min-height: 100vh;
+}
 
 </style>
