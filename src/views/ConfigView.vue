@@ -20,13 +20,13 @@
 
          <!-- メイン -->   
          <div class="my-main">
-             <div class="add-form">
+             <div class="add-form" style="text-align:center">
 
                  <div style="height:100px">
 
                  </div>
 
-                 <el-button type="danger" @click="toTitleView">ログアウト</el-button>
+                 <el-button type="danger" @click="Logout">ログアウト</el-button>
 
              </div>
          </div>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-
+import { getAuth } from "firebase/auth";
 
 export default {
     components:{
@@ -89,8 +89,11 @@ export default {
         toMainView(){
             this.$router.push('/main');
         },
-        toTitleView(){
-            this.$router.push('/');
+        Logout(){
+            const auth = getAuth();
+            auth.signOut();
+            localStorage.clear('userinfo');
+            this.$router.push("/");
         }
     }
 }

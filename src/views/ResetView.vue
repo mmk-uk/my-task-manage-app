@@ -2,6 +2,16 @@
     <div class="signin-view">
          <!-- メイン -->   
          <div class="my-main">
+            <!-- アラート -->
+            <el-alert
+                v-if="alertFlag"
+                title="エラー"
+                :description="alertmessage"
+                type="error"
+                show-icon
+                @close="alertFlag=false">
+            </el-alert>
+
              <div class="add-form">
 
                         <!-- 新規タスク -->  
@@ -23,8 +33,8 @@
                         </div>
 
 
-                        <div style="margin-top:40px;">
-                            <el-button type="primary" class="custom-button">送信</el-button>
+                        <div style="margin-top:40px;text-align:center">
+                            <el-button type="primary" class="custom-button" @click="send">送信</el-button>
 
                         </div>
 
@@ -38,7 +48,7 @@
         <div style="height: 100vh;;width:100%;">
             <!-- 戻るボタン -->
                 <div class="bottom-left">
-                    <el-button type="primary" circle class="back-button" @click="toTitleView">
+                    <el-button type="primary" circle class="back-button" @click="toSigninView">
                         <mdicon name="chevron-left" size="40" />
                     </el-button>
                 </div>
@@ -50,19 +60,38 @@
 
 
 <script>
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 
 export default{
     data(){
         return{
             email: "",
-            password: ""
+            alertFlag:false,
+            alertmessage:""
         }
 
     },
     methods:{
-        toTitleView(){
-            this.$router.push('/');
+        toSigninView(){
+            this.$router.push({name:'signin',params:{sendmail: ""}});
+        },
+        send() {
+            const auth = getAuth();
+            auth.languageCode = 'ja'; // 日本語に設定
+            sendPasswordResetEmail(auth,this.email)
+                .then(() => {
+                    this.$router.push({name:'signin',params:{sendmail: "再設定メールを送信しました。"}});
+
+                }).catch(() => {
+                    console.log("該当するデータが見つかりません。")
+
+                    this.alertmessage = "該当するデータが見つかりません。"
+                    
+                    this.alertFlag = true;
+
+                });
         }
+
     }
 }
 </script>

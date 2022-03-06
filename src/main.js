@@ -15,6 +15,23 @@ import VModal from 'vue-js-modal'
 
 
 
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore"
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCg58YDmEp9k4kgqUs33SmYhUVvrmb_WMY",
+  authDomain: "my-task-manage-app.firebaseapp.com",
+  projectId: "my-task-manage-app",
+  storageBucket: "my-task-manage-app.appspot.com",
+  messagingSenderId: "438046288064",
+  appId: "1:438046288064:web:ae359218626cd55afe2525"
+};
+
+initializeApp(firebaseConfig);
+
+getFirestore();
+
+
 Vue.use(ElementUI, { locale })
 Vue.use(mdiVue, {
   icons: mdijs
@@ -30,3 +47,4 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+

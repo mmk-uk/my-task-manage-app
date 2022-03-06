@@ -35,7 +35,7 @@
                         </el-button>
                         </div>
                     </el-col>
-                    <el-col :span="18" style="height: 40px;">
+                    <el-col :span="18" style="height: 40px;text-align:center">
                         <swiper
                             :options="swiperOptionThumbs" 
                             class="thumbs-swiper gallery-thumbs" 

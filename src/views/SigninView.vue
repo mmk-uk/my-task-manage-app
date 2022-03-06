@@ -2,8 +2,26 @@
     <div class="signin-view">
          <!-- メイン -->   
          <div class="my-main">
-             <div class="add-form">
+                    <!-- アラート -->
+                    <el-alert
+                        v-if="alertFlag"
+                        title="エラー"
+                        :description="alertmessage"
+                        type="error"
+                        show-icon
+                        @close="alertFlag=false">
+                    </el-alert>
 
+                    <el-alert
+                        v-if="alertFlag2"
+                        title="完了"
+                        :description="sendmail"
+                        type="success"
+                        show-icon
+                        @close="alertFlag2 = false">
+                    </el-alert>
+
+                    <div class="add-form">
                         <!-- 新規タスク -->  
                         <div class="add-form-slide" style="margin-top:10px">
                             <span style="font-size:190%;font-weight: 900;">ログイン</span>
@@ -30,12 +48,12 @@
                         
 
 
-                        <div style="margin-top:40px;">
-                            <el-button type="primary" class="custom-button"  @click="toMainView">ログイン</el-button>
+                        <div style="margin-top:40px;text-align:center">
+                            <el-button type="primary" class="custom-button"  @click="signIn">ログイン</el-button>
 
                         </div>
 
-                        <div style="margin-top:60px;">
+                        <div style="margin-top:60px;text-align:center">
                             <el-button style="border:none;" @click="toResetView">パスワードを忘れた</el-button>
                         </div>
                    
@@ -59,16 +77,47 @@
 
 
 <script>
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default{
+    props:['sendmail'],
     data(){
         return{
             email: "",
-            password: ""
+            password: "",
+            alertFlag:false,
+            alertFlag2:false,
+            alertmessage:""
         }
 
     },
+    created(){
+        if(this.sendmail){
+            this.alertFlag2=true
+            
+        }
+    },
     methods:{
+        signIn(){
+            const auth = getAuth();
+            signInWithEmailAndPassword(auth, this.email, this.password)
+            .then(user => {
+                console.log(user);
+                localStorage.setItem('userinfo',JSON.stringify({userid: user.user.uid}));
+                this.$router.push('/main');
+            })
+            .catch(error => {
+                if(error.code == "auth/invalid-email"){
+                    this.alertmessage = "メールアドレスが間違っています。"
+                }else if(error.code == "auth/wrong-password"){
+                    this.alertmessage = "パスワードが間違っています。"
+                }else{
+                    this.alertmessage = "エラー！"
+                }
+                this.alertFlag = true;
+            })
+        }
+        ,
         toTitleView(){
             this.$router.push('/');
         },

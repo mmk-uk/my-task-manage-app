@@ -85,7 +85,7 @@
                             </vue-timepicker>
                         </div>
 
-                        <div style="margin-top:30px;">
+                        <div style="margin-top:30px;text-align:center">
                             <el-button type="primary">追加する</el-button>
 
                         </div>
@@ -146,7 +146,7 @@
                             </vue-timepicker>     
                         </div>
 
-                        <div style="margin-top:30px;">
+                        <div style="margin-top:30px;text-align:center">
                             <el-button type="primary">追加する</el-button>
 
                         </div>

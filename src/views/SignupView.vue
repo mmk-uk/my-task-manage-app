@@ -1,10 +1,20 @@
 <template>
     <div class="signup-view">
+
+
          <!-- メイン -->   
          <div class="my-main">
-             <div class="add-form">
+            <!-- アラート -->
+            <el-alert
+                v-if="alertFlag"
+                title="エラー"
+                :description="alertmessage"
+                type="error"
+                show-icon
+                @close="alertFlag=false">
+            </el-alert>
 
-                        <!-- 新規タスク -->  
+             <div class="add-form">
                         <div class="add-form-slide" style="margin-top:10px">
                             <span style="font-size:190%;font-weight: 900;">新規登録</span>
                         </div>
@@ -14,9 +24,10 @@
                                 <mdicon  name="email-outline" size="30" />
                             </div>               
                             <el-input placeholder="メールアドレス" v-model="email">
-                               
                             </el-input>
+                            
                         </div>
+                        <p v-if="isInValidEmail" class="error">正しいメールアドレスの形式で入力してください。</p>
 
                         <div class="add-form-slide" style="margin-top:30px">
                             <span>パスワード(半角英数字1種類以上含む8文字以上)</span>
@@ -30,6 +41,7 @@
                                
                             </el-input>
                         </div>
+                        <p v-if="isInValidPassword" class="error">正しいパスワードの形式で入力してください。</p>
 
                         <div  class="add-form-slide" style="margin-top:25px;display:flex;">
                             <div style="margin-top:4px;margin-right:5px;">
@@ -39,10 +51,11 @@
                                
                             </el-input>
                         </div>
+                        <p v-if="isCheckPassword" class="error">パスワードが異なります</p>
 
 
-                        <div style="margin-top:40px;">
-                            <el-button type="primary" class="custom-button" @click="toTitleView">新規登録</el-button>
+                        <div style="margin-top:40px;text-align:center">
+                            <el-button type="primary" class="custom-button" @click="signUp">登録する</el-button>
 
                         </div>
                    
@@ -66,23 +79,73 @@
 
 
 <script>
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import "firebase/firestore"
+
 
 export default{
     data(){
         return{
             email: "",
             password1: "",
-            password2: ""
+            password2: "",
+            alertFlag:false,
+            alertmessage:""
         }
 
     },
     methods:{
+        signUp() {
+            if(!this.isInValidEmail && !this.isInValidPassword && !this.isCheckPassword){
+                const auth = getAuth();
+                createUserWithEmailAndPassword(auth, this.email, this.password1)
+                .then(user => {
+                    console.log(user);
+                    // サインイン画面に遷移
+                    this.$router.push({name:'signin',params:{sendmail: "登録完了しました。"}});
+                })
+                .catch(error => {
+                    console.log(error);
+                    if(error.code == "auth/email-already-in-use"){
+                        this.alertmessage = "すでに存在しているメールアドレスです。"
+                    }else{
+                        this.alertmessage = "エラー！"
+                    }    
+                    this.alertFlag = true;
+                })
+            }else{
+                this.alertmessage="登録に失敗しました。"
+                this.alertFlag = true;
+            }
+
+        },       
         toTitleView(){
             this.$router.push('/');
-        },
-        toSigninView(){
-            this.$router.push('/signin');
         }
+    },
+    computed:{
+        isInValidEmail(){//true:だめ,false:OK
+              //メールアドレスとして判定される文字列と記号の組み合わせを定数化
+            const reg = new RegExp(/^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/);
+            //指定した組み合わせになっていなかった場合判定を返す。
+            return !reg.test(this.email);
+        },
+        isInValidPassword(){//true:だめ,false:OK
+              //メールアドレスとして判定される文字列と記号の組み合わせを定数化
+            const reg = new RegExp( /^(?=.*?[a-z])(?=.*?\d)[a-z\d]{8,100}$/);
+            //指定した組み合わせになっていなかった場合判定を返す。
+            return !reg.test(this.password1);
+        },
+        isCheckPassword(){//true:だめ,false:OK
+            if (this.isInValidPassword){
+                return false
+            }else{
+                return !(this.password1 == this.password2)
+                
+            }
+            
+        }
+
     }
 }
 </script>
@@ -90,8 +153,17 @@ export default{
 
 <style scoped>
 
-.add-view{
+.signup-view{
 }
+
+.el-alert {
+}
+
+.error{
+    color: #F56C6C;
+    font-size: 80%;
+}
+
 
 .el-header {
   z-index: 9000;
