@@ -16,7 +16,6 @@ import VModal from 'vue-js-modal'
 
 
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
   apiKey: "AIzaSyCg58YDmEp9k4kgqUs33SmYhUVvrmb_WMY",
@@ -29,7 +28,7 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-getFirestore();
+
 
 
 Vue.use(ElementUI, { locale })

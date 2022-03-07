@@ -12,7 +12,12 @@
                         <span style="font-size:110%;">カテゴリの管理</span>
                     </el-col>
                     <el-col :span="4" style="text-align: right; height: 60px; line-height: 135px;"> 
-
+                        <el-button v-if="!dragmode" @click="dragModeChange" type="primary" circle style="background-color: rgba(0,0,0,0); border:none;">
+                            <mdicon name="swap-vertical" size="30" />
+                        </el-button>
+                        <el-button v-if="dragmode"  @click="dragModeChange" type="primary" circle style="background-color: rgba(0,0,0,0); border:none;">
+                            <mdicon name="check" size="30" />
+                        </el-button>
                     </el-col>
 
                 </el-row>
@@ -26,7 +31,7 @@
             </div>
             <div class="modal-body">
                 <div style="height:100%;margin-top:20px;">
-                    <el-input></el-input>
+                    <el-input v-model="categorytitle"></el-input>
                 </div>
             </div>  
             <div class="modal-footer">
@@ -34,7 +39,7 @@
                     <el-button @click="hideAddCategoryModal">キャンセル</el-button>
                 </div>
                 <div style="text-align:right">
-                    <el-button type="primary" @click="hideAddCategoryModal">追加する</el-button>
+                    <el-button type="primary" @click="AddCategory">追加する</el-button>
                 </div>
             </div>
         </modal>
@@ -51,7 +56,7 @@
             </div>
             <div class="modal-body">
                 <div style="height:100%;margin-top:20px;">
-                    <el-input></el-input>
+                    <el-input v-model="categorytitle"></el-input>
                 </div>
             </div>  
             <div class="modal-footer">
@@ -59,7 +64,7 @@
                     <el-button @click="hideEditCategoryModal">キャンセル</el-button>
                 </div>
                 <div style="text-align:right">
-                    <el-button type="primary" @click="hideEditCategoryModal">更新する</el-button>
+                    <el-button type="primary" @click="updateCategory(selectcategory)">更新する</el-button>
                 </div>
             </div>
         </modal>
@@ -79,7 +84,7 @@
                     <el-button @click="hideDeleteCategoryModal">キャンセル</el-button>
                 </div>
                 <div style="text-align:right">
-                    <el-button type="danger" @click="hideDeleteCategoryModal">削除する</el-button>
+                    <el-button type="danger" @click="deleteCategory(selectcategory)">削除する</el-button>
                 </div>
             </div>
         </modal>
@@ -89,20 +94,19 @@
          <!-- メイン -->   
 
         <div class="my-main">
-
+             <!-- カテゴリ表示リスト -->   
             <div class="category-list">
-                <draggable v-model="categoryData" :options="{handle: '.item-handle'}">
-                    <div v-for="(category,i) in categoryData" :key="i" class="category-box"> 
-                        <div style="margin-top: 16px;margin-right: 4px;margin-left: 7px;" >
-                            <mdicon name="drag-horizontal-variant" size="30"  class="item-handle" />
-                        </div>
+                <draggable v-model="categoryData" :options="{handle: '.item-handle'}" >
+                    <div v-for="(category) in $store.state.categorys" :key="category['order_num']" class="category-box"> 
+
                         <div style="width: 100%;margin-top: 14px;margin-left:7px;text-align: left;">
-                            <span style=" font-size: 130%;">{{category.title}}</span>
+                            <span style=" font-size: 130%;">{{category['title']}}</span>
                         </div>
                         <div style="margin-top: 14px;margin-right: 7px;" >
-                            <el-button circle class="my-button" @click="showEditCategoryModal">
+                            <el-button v-if="!dragmode" circle class="my-button" @click="showEditCategoryModal(category)">
                                 <mdicon name="pencil-outline" size="30"/>
                             </el-button>
+                            <mdicon  v-if="dragmode" name="drag-horizontal-variant" size="30"  class="item-handle" />
                         </div>
 
 
@@ -115,14 +119,14 @@
          <div style="height: 100vh;;width:100%;">
             <!-- 戻るボタン -->
                 <div class="bottom-left">
-                    <el-button type="primary" circle class="back-button" @click="toMainView">
+                    <el-button v-if="!dragmode" type="primary" circle class="back-button" @click="toMainView">
                         <mdicon name="chevron-left" size="40" />
                     </el-button>
                 </div>
 
             <!-- 追加ボタン -->
                 <div class="bottom-right">
-                    <el-button type="primary" circle class="add-button" @click="showAddCategoryModal">
+                    <el-button v-if="!dragmode" type="primary" circle class="add-button" @click="showAddCategoryModal">
                         <mdicon name="plus" size="40" />
                     </el-button>
                 </div>
@@ -141,34 +145,85 @@ export default {
     },
     data(){
         return{
+            categorytitle:"",
+            selectcategory:{},
             addCategoryDialog:false,
-            categoryData: [{title:"カテゴリ1"},{title:"カテゴリ2"},{title:"カテゴリ3"},{title:"カテゴリ4"}]
+            dragmode:false
+        }
+    },
+    computed:{
+        categoryData:{
+            get() {
+                return this.$store.state.categorys
+            },
+            set(value) {
+                var newcategorydata = value;
+                newcategorydata.forEach((category,i) => {
+                    category.order_num = i+1;
+                });
+                console.log(newcategorydata);
+                this.$store.commit('setCategorys', newcategorydata)
+            }
         }
     },
     methods:{
         toMainView(){
             this.$router.push('/main');
         },
-        addCategory(){
 
-        },
+        //カテゴリ追加処理
         showAddCategoryModal(){
+            this.categorytitle = "";
             this.$modal.show('add-category-modal');
         },
         hideAddCategoryModal(){
             this.$modal.hide('add-category-modal');
         },
-        showEditCategoryModal(){
+        AddCategory(){
+            if(this.categorytitle.length>0){
+                this.$store.dispatch('addCategorys',this.categorytitle);
+                this.$modal.hide('add-category-modal');
+            }
+        },
+
+        //カテゴリ編集処理
+        showEditCategoryModal(category){
+            console.log(category.title);
+            this.selectcategory = category;
+            this.categorytitle = category.title;
             this.$modal.show('edit-category-modal');
         },
         hideEditCategoryModal(){
             this.$modal.hide('edit-category-modal');
         },
+        updateCategory(category){
+            if(this.categorytitle.length>0){
+                this.$store.dispatch('chengetitleCategory',{category:category,newcategorytitle:this.categorytitle});
+                this.$modal.hide('edit-category-modal');
+            }
+        },
+        //カテゴリ消去処理
         showDeleteCategoryModal(){
             this.$modal.show('delete-category-modal');
         },
         hideDeleteCategoryModal(){
             this.$modal.hide('delete-category-modal');
+        },
+        deleteCategory(category){
+            this.$store.dispatch('deleteCategory',category);
+            this.categorytitle = "";
+            this.$modal.hide('edit-category-modal');
+            this.$modal.hide('delete-category-modal');
+        },
+        //カテゴリの順番変更処理
+        dragModeChange(){
+          if (this.dragmode == true){
+            this.dragmode = false;
+
+            this.$store.dispatch('updateCategorys', this.categoryData);
+          }else{
+            this.dragmode = true;
+          }
         }
     }
 }

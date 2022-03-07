@@ -41,21 +41,20 @@
                             class="thumbs-swiper gallery-thumbs" 
                             ref="swiperThumbs"
                             @clickSlide="onSwiperClickSlide"
+                            @slideChange="swipeTab"
                         >
                             <swiper-slide>
 
                             </swiper-slide>
-                            <swiper-slide v-for="(slide) in slides" :key="slide[1]" v-bind:class="{'selected_slide': slide[1] === selectedIndex}">
+                            <swiper-slide v-for="(category) in $store.state.categorys" :key="category['order_num']" v-bind:class="{'selected_slide': category['order_num'] === selectedIndex}">
                                 <span class="category-title">
-                                    {{slide[0]}}
+                                    {{category['title']}}
                                 </span>
                             </swiper-slide>
                         </swiper>
 
                     </el-col>
                 </el-row>
-
-
             </div>
 
          <!-- メイン -->   
@@ -73,13 +72,13 @@
                 <swiper-slide>
                         <ListDisplay :slideNum=0 :categorytitle="'全て'"></ListDisplay>
                 </swiper-slide>
-                <swiper-slide v-for="(slide,i) in slides" :key="slide[1]">
-                        <ListDisplay :slideNum=i+1 :categorytitle="slide[0]"></ListDisplay>
+                <swiper-slide v-for="(category) in $store.state.categorys" :key="category['order_num']">
+                        <ListDisplay :slideNum="category['order_num']" :categorytitle="category['title']"></ListDisplay>
                 </swiper-slide>
             </swiper>
 
         <!-- 追加ボタン -->
-            <div class="bottom-right">
+            <div class="bottom-right" v-if="selectedIndex != 0">
                 <el-button type="primary" circle class="add-button" @click="toAddView">
                     <mdicon name="plus" size="40" />
                 </el-button>
@@ -108,18 +107,32 @@ export default {
             swiperOptionThumbs: {
                 speed:300,
                 spaceBetween: 0,
+                initialSlide: 1,
                 centeredSlides: true,
                 slidesPerView: 5,
                 slideToClickedSlide: true,
-                freeMode:true,
-                initialSlide: 1
+                freeMode:true
             }
         }
     },
+    created(){
+        const userinfo = JSON.parse(localStorage.getItem('userinfo')) || false;
+        //console.log(userinfo)
+        if(userinfo){
+            this.$store.commit('setUserID',userinfo['userid']);
+        }else{
+            this.$router.push('/');
+        }
+        this.$store.dispatch('getCategorys')
+        
+        
+
+    },
     mounted() {
-        window.addEventListener("orientationchange", this.changeDirection);
+        //window.addEventListener("orientationchange", this.changeDirection);
         this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
-        //this.$refs.swiperThumbs.$swiper.slideTo(1);
+        this.$store.commit('changeListNum',this.selectedIndex)
+        
         //this.$nextTick(() => {
 			//const swiperTop = this.$refs.swiperTop.$swiper
 			//const swiperThumbs = this.$refs.swiperThumbs.$swiper
@@ -127,9 +140,13 @@ export default {
 			//swiperThumbs.controller.control = swiperTop
         //});
     },
+    updated(){
+        //this.$refs.swiperThumbs.$swiper.slideTo(1);
+    },
     methods:{
         onSwipe() {
             this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
+            this.$store.commit('changeListNum',this.selectedIndex)
 
         },
         onSwiperClickSlide(){
@@ -191,6 +208,9 @@ export default {
                 // 縦向きになったときの処理
 
             }
+        },
+        swipeTab(){
+            //console.log(this.$refs.swiperThumbs.$swiper.activeIndex)
         }
     },
     watch:{

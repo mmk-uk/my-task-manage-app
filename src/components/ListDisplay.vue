@@ -13,7 +13,7 @@
                     
                 </el-col>
                 <el-col :span="4" style="text-align: right;">
-                    <el-button circle class="my-button" @click="toArchiveView">
+                    <el-button circle class="my-button" @click="toArchiveView" v-if="slideNum != 0">
                         <mdicon name="archive-check-outline" size="40" />
                     </el-button>
                 </el-col>

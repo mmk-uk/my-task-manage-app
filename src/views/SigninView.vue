@@ -104,6 +104,7 @@ export default{
             .then(user => {
                 console.log(user);
                 localStorage.setItem('userinfo',JSON.stringify({userid: user.user.uid}));
+                this.$store.commit('setUserID',user.user.uid);
                 this.$router.push('/main');
             })
             .catch(error => {

@@ -80,8 +80,8 @@
 
 <script>
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import "firebase/firestore"
-
+import { getFirestore, doc, setDoc } from "firebase/firestore"
+import { v4 as uuidv4 } from "uuid";
 
 export default{
     data(){
@@ -100,27 +100,64 @@ export default{
                 const auth = getAuth();
                 createUserWithEmailAndPassword(auth, this.email, this.password1)
                 .then(user => {
-                    console.log(user);
+
+                    this.createDB(user.user.uid);
+
                     // サインイン画面に遷移
                     this.$router.push({name:'signin',params:{sendmail: "登録完了しました。"}});
                 })
                 .catch(error => {
                     console.log(error);
                     if(error.code == "auth/email-already-in-use"){
-                        this.alertmessage = "すでに存在しているメールアドレスです。"
+                        this.alertmessage = "すでに存在しているメールアドレスです。";
                     }else{
-                        this.alertmessage = "エラー！"
+                        console.log(error);
+                        this.alertmessage = "エラー！";
                     }    
                     this.alertFlag = true;
                 })
             }else{
-                this.alertmessage="登録に失敗しました。"
+                this.alertmessage="登録に失敗しました。";
                 this.alertFlag = true;
             }
 
         },       
         toTitleView(){
             this.$router.push('/');
+        },
+        createDB: async function(userid){
+            const db = getFirestore();
+            await setDoc(doc(db,'users',userid),{
+                email: this.email
+            }
+            );
+            const categoryid = uuidv4();
+            const taskid = uuidv4();
+            const eventid = uuidv4();
+            //var hiduke = new Date();
+            //hiduke.setDate(hiduke.getDate() + 3)
+            //const kyou = {year:hiduke.getFullYear(),month:hiduke.getMonth()+1,day:hiduke.getDate()}
+            await setDoc(doc(db,'users',userid,'categorys',categoryid),{
+                id: categoryid,
+                title: 'やること',
+                order_num: 1
+            });
+            await setDoc(doc(db,'users',userid,'tasks',taskid),{
+                id: taskid,
+                category_id: categoryid,
+                title: 'タスク1',
+                limit_date: new Date(),
+                limit_time_flag : false,
+                done_task : false
+            });
+            await setDoc(doc(db,'users',userid,'events',eventid),{
+                id: eventid,
+                category_id: categoryid,
+                title: 'イベント1',
+                start_date: new Date(),
+                end_time_flag : false,
+                end_date: new Date()
+            });
         }
     },
     computed:{
