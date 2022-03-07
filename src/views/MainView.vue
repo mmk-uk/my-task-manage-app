@@ -101,7 +101,8 @@ export default {
             slides:[["スライド1",1],["スライド2",2],["スライド3",3],["スライド4",4],["スライド5",5],["スライド6",6],["スライド7",7],["スライド8",8]],
             swiperOptionTop: {
                 slidesPerView: 1,
-                spaceBetween:10
+                spaceBetween:10,
+                initialSlide: this.$store.state.ListNum
                 
             },
             swiperOptionThumbs: {
@@ -123,30 +124,35 @@ export default {
         }else{
             this.$router.push('/');
         }
-        this.$store.dispatch('getCategorys')
-        
-        
+        if(this.$store.state.categorys.length == 0){
+            console.log("カテゴリ読み込み")
+            this.$store.dispatch('getCategorys')
+        }
+        if(this.$store.state.reminds.length == 0){
+            console.log("リマインズ読み込み")
+            this.$store.dispatch('getReminds')
+        }
+
+
 
     },
     mounted() {
         //window.addEventListener("orientationchange", this.changeDirection);
+        this.$refs.swiperTop.$swiper.slideTo(this.$store.state.ListNum);
         this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
         this.$store.commit('changeListNum',this.selectedIndex)
-        
-        //this.$nextTick(() => {
-			//const swiperTop = this.$refs.swiperTop.$swiper
-			//const swiperThumbs = this.$refs.swiperThumbs.$swiper
-			//swiperTop.controller.control = swiperThumbs
-			//swiperThumbs.controller.control = swiperTop
-        //});
     },
     updated(){
         //this.$refs.swiperThumbs.$swiper.slideTo(1);
+        //if(this.$store.state.ListNum){
+            //this.$refs.swiperTop.$swiper.slideTo(this.$store.state.ListNum);
+        //}
     },
     methods:{
         onSwipe() {
             this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
             this.$store.commit('changeListNum',this.selectedIndex)
+            //console.log(this.$store.state.ListNum)
 
         },
         onSwiperClickSlide(){

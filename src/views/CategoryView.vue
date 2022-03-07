@@ -198,7 +198,7 @@ export default {
         },
         updateCategory(category){
             if(this.categorytitle.length>0){
-                this.$store.dispatch('chengetitleCategory',{category:category,newcategorytitle:this.categorytitle});
+                this.$store.dispatch('changetitleCategory',{category:category,newcategorytitle:this.categorytitle});
                 this.$modal.hide('edit-category-modal');
             }
         },

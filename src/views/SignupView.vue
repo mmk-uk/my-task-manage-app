@@ -146,7 +146,7 @@ export default{
                 id: taskid,
                 category_id: categoryid,
                 title: 'タスク1',
-                limit_date: new Date(),
+                date: new Date(),
                 limit_time_flag : false,
                 done_task : false
             });
@@ -154,7 +154,7 @@ export default{
                 id: eventid,
                 category_id: categoryid,
                 title: 'イベント1',
-                start_date: new Date(),
+                date: new Date(),
                 end_time_flag : false,
                 end_date: new Date()
             });

@@ -28,56 +28,38 @@
                 <el-divider ></el-divider>
             </div>
 
-            <div class="list-box">
-                <el-row style="height: 75px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 75px;">
-                        <div class="flexbox1">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
+            <div v-for="(remind) in $store.state.reminds" :key="remind.id">
+                <div v-if="remind.type == 'task'" class="list-box">
+                    <el-row style="height: 75px; margin-bottom: 8px;">
+                        <el-col :span="2" style="height: 75px;">
+                            <div class="flexbox1">
+                                <span style="font-weight: bold">2</span>
+                                <span style="font-size:70%">(水)</span>
+                            </div>
 
-                    </el-col>
-                    <el-col :span="22" style="height: 75px;">
-                         <TaskBox></TaskBox>  
-                    </el-col>
-                </el-row>
-            </div>
+                        </el-col>
+                        <el-col :span="22" style="height: 75px;">
+                            <TaskBox :slideNum="slideNum" :boxtask="remind"></TaskBox>  
+                        </el-col>
+                    </el-row>
+                </div>
+    
+                <div v-if="remind.type == 'event'" class="list-box">
+                    <el-row style="height: 60px; margin-bottom: 8px;">
+                        <el-col :span="2" style="height: 60px;">
+                            <div class="flexbox2">
+                                <span style="font-weight: bold">2</span>
+                                <span style="font-size:70%">(水)</span>
+                            </div>
 
-            <div class="list-box">
-                <el-row style="height: 75px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 75px;">
-                        <div class="flexbox1">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
+                        </el-col>
+                        <el-col :span="22" style="height: 60px;">
+                            <EventBox :slideNum="slideNum" :boxevent="remind"></EventBox> 
+                        </el-col>
+                    </el-row>
+                </div>               
 
-                    </el-col>
-                    <el-col :span="22" style="height: 75px;">
-                         <TaskBox></TaskBox>  
-                    </el-col>
-                </el-row>
-            </div>
- 
-            <div class="list-box">
-                <el-row style="height: 60px; margin-bottom: 8px;">
-                    <el-col :span="2" style="height: 60px;">
-                        <div class="flexbox2">
-                            <span style="font-weight: bold">2</span>
-                            <span style="font-size:70%">(水)</span>
-                        </div>
-
-                    </el-col>
-                    <el-col :span="22" style="height: 60px;">
-                         <EventBox></EventBox> 
-                    </el-col>
-                </el-row>
-            </div>
-
-
-
-
-
-         
+            </div>         
         </div>
 
 

@@ -45,7 +45,7 @@
                             <span style="font-size:190%;font-weight: 900;">新規タスク</span>
                         </div>
                         <div  class="add-form-slide" style="margin-top:2px">
-                            <span>カテゴリ：生活</span>
+                            <span>カテゴリ：{{$store.state.categorys[$store.state.ListNum-1].title}}</span>
                         </div>
                         <div  class="add-form-slide" style="margin-top:15px;display:flex;">
                             <div style="margin-top:4px;margin-right:5px;">
@@ -62,6 +62,9 @@
                             <date-picker
                                 placeholder="締切日"
                                 v-model="taskdate"
+                                name="datepick"
+                                format="yyyy-MM-dd"
+                                :language="ja"
                             >
                             </date-picker>         
                         </div>
@@ -86,10 +89,12 @@
                         </div>
 
                         <div style="margin-top:30px;text-align:center">
-                            <el-button type="primary">追加する</el-button>
+                            <el-button type="primary" @click="addTask">追加する</el-button>
 
                         </div>
                     </swiper-slide>
+
+
                     <swiper-slide>
                         <!-- 新規イベント -->  
                         <div class="add-form-slide" style="margin-top:10px">
@@ -111,10 +116,13 @@
                                 <mdicon  name="calendar-outline" size="30" />
                             </div>               
                             <date-picker
-                                placeholder="締切日"
+                                placeholder="予定日"
                                 v-model="eventdate"
+                                format="yyyy-MM-dd"
+                                name="datepick"
+                                :language="ja"
                             >
-                            </date-picker>      
+                            </date-picker>   
                         </div>
                         <div  class="add-form-slide" style="margin-top:15px;display:flex;">
                             <div style="margin-top:4px;margin-right:5px;">
@@ -147,7 +155,7 @@
                         </div>
 
                         <div style="margin-top:30px;text-align:center">
-                            <el-button type="primary">追加する</el-button>
+                            <el-button type="primary"  @click="addEvent">追加する</el-button>
 
                         </div>
                     </swiper-slide>
@@ -176,28 +184,33 @@
 <script>
 import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue'
 import 'vue2-timepicker/dist/VueTimepicker.css'
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
+import Datepicker from 'vuejs-datepicker';
+import {ja} from 'vuejs-datepicker/dist/locale';
+import { v4 as uuidv4 } from "uuid";
 
 export default {
     components:{
         'vue-timepicker': VueTimepicker,
-        'date-picker':DatePicker
+        'date-picker':Datepicker,
+    },
+    created(){
+        console.log(this.$store.state.ListNum)
     },
     data(){
         return{
             activeType: 'task',
             radio: 'タスク',
+            ja: ja,
+            
             tasktimeset: false,
             eventtimeend:false,
             tasktitle:'',
-            taskdate:'',
-            tasktime:'',
+            taskdate:null,
+            tasktime:null,
             eventtitle:'',
-            eventdate:'',
-            eventstarttime:'',
-            eventendtime:''
-            
+            eventdate:null,
+            eventstarttime:null,
+            eventendtime:null
             
         }
     },
@@ -219,7 +232,79 @@ export default {
         },
         toMainView(){
             this.$router.push('/main');
+        },
+        addTask(){
+            if (this.tasktimeset) {
+                if(this.tasktitle.length>0 && this.taskdate && this.tasktime){     
+                    var limitdate1 = new Date(this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),Number(this.tasktime.HH),Number(this.tasktime.mm),0);
+                    const newtask = {
+                        type : "task",
+                        id : uuidv4(),
+                        category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
+                        title : this.tasktitle,
+                        date : limitdate1,
+                        limit_time_flag : true,
+                        done_task : false
+                    }
+                    this.$store.dispatch('addTasks',newtask);
+                    this.$router.push('/main');
+                }
+            }else{
+                if(this.tasktitle.length>0 && this.taskdate ){     
+                    var limitdate2 = new Date(this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),23,59,59);
+                    const newtask = {
+                        type : "task",
+                        id : uuidv4(),
+                        category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
+                        title : this.tasktitle,
+                        date : limitdate2,
+                        limit_time_flag : false,
+                        done_task : false
+                    }
+                    this.$store.dispatch('addTasks',newtask);
+                    this.$router.push('/main');
+                }
+            }
+        },
+        addEvent(){
+            if (this.eventtimeend) {
+                if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime && this.eventendtime){     
+                    var limitdate1 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventstarttime.HH),Number(this.eventstarttime.mm),59);
+                    var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventendtime.HH),Number(this.eventendtime.mm),59);
+
+                    const newevent = {
+                        type : "event",
+                        id : uuidv4(),
+                        category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
+                        title : this.eventtitle,
+                        date : limitdate1,
+                        end_date : limitdate2,
+                        end_time_flag : true
+                    }
+                    this.$store.dispatch('addEvents',newevent);
+                    this.$router.push('/main');
+                }
+            }else{
+                if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime ){     
+                    var limitdate3 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventstarttime.HH),Number(this.eventstarttime.mm),0);
+                    var limitdate4 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
+
+                    const newevent = {
+                        type : "event",
+                        id : uuidv4(),
+                        category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
+                        title : this.eventtitle,
+                        date : limitdate3,
+                        end_date : limitdate4,
+                        end_time_flag : false
+                    }
+                    this.$store.dispatch('addEvents',newevent);
+                    this.$router.push('/main');
+                }
+            }
         }
+        
+        
     }
 }
 
@@ -331,11 +416,20 @@ export default {
     font-family: 'DotGothic16', sans-serif;
 }
 
-.mx-datepicker{
-    width: 85vw;
+.vdp-datepicker{
+    width: 85vw  !important;;
     height: 40px;
     
 
+}
+.vdp-datepicker div:first-of-type input{
+    width: 85vw  !important;
+    height: 40px !important;
+    border-color:#303d4e  !important;
+    border-width: 2px  !important;
+    border-radius: 4px  !important;
+    font-size: 85% !important;
+    padding-left: 10px !important;
 }
 
 .mx-input{

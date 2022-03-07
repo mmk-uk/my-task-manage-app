@@ -7,11 +7,13 @@
             </div>
             <div class="line"></div>
             <div class="flexbox2">
-                <span style="margin-top: 10px;">イベント</span>
+                <span style="margin-top: 10px;">{{boxevent.title}}</span>
                 <span style="margin-top: 2px;font-size:70%;opacity: 0.7">生活</span>
             </div>
             <div class="flexbox3">
-                <mdicon name="dots-horizontal" size="25" />
+                <el-button circle  size="mini" class="my-button" @click="toEditEvent">
+                  <mdicon name="dots-horizontal" size="25" />
+                </el-button>
             </div>    
 
         </div>
@@ -19,7 +21,14 @@
 </template>
 
 <script>
-
+export default{
+  props:["boxevent"],
+  methods:{
+    toEditEvent(){
+      this.$router.push({name:'editevent',params:{boxevent:this.boxevent}});
+    }
+  }
+}
 
 </script>
 
@@ -71,6 +80,13 @@
   margin-right: 7px;
   margin-top: 16px;
   
+}
+
+.my-button{
+    background-color: rgba(0,0,0,0);;
+    border:none;
+    color: #303133;
+    padding: 0px;
 }
 
 </style>

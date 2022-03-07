@@ -9,15 +9,22 @@
             
             <div class="flexbox2">
                 <span style="margin-top: 2px;font-size:50%">~11:00</span>
-                <span style="margin-top: 3px;font-size:110%">タスク</span>
+                <span style="margin-top: 3px;font-size:110%">{{boxtask.title}}</span>
                 <span style="margin-top: 3px;font-size:80%;opacity: 0.7">生活</span>
             </div>      
             <div class="flexbox3">
                 <div style="margin-top: 5px;">
+                  <el-button v-if="!boxtask.done_task" circle  size="mini" class="my-button" @click="changeDone">
                     <mdicon name="checkbox-blank-outline" size="25" />
+                  </el-button>
+                  <el-button v-if="boxtask.done_task" circle  size="mini" class="my-button" @click="changeDone">
+                    <mdicon name="checkbox-marked-outline" size="25" />
+                  </el-button>
                 </div>
                 <div style="margin-top: 8px;">
+                  <el-button circle  size="mini" class="my-button" @click="toEditTask">
                     <mdicon name="dots-horizontal" size="25" />
+                  </el-button>
                 </div>
             </div>    
 
@@ -30,7 +37,17 @@
 </template>
 
 <script>
-
+export default{
+  props:["slideNum","boxtask"],
+  methods:{
+    changeDone(){
+      this.$store.dispatch('changeDoneTask',this.boxtask.id);
+    },
+    toEditTask(){
+      this.$router.push({name:'edittask',params:{boxtask:this.boxtask}});
+    }
+  }
+}
 
 </script>
 
@@ -73,5 +90,12 @@
   margin-right: 7px;
   margin-top: 5px;
   
+}
+
+.my-button{
+    background-color: rgba(0,0,0,0);;
+    border:none;
+    color: #303133;
+    padding: 0px;
 }
 </style>
