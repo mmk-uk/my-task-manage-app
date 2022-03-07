@@ -22,20 +22,37 @@
 
         <div class="list-view">
 
-
-            <div class="month-label">
-                <span style="font-weight: bold;font-size:110%">3月 </span><span style="font-size:60%">2022年</span>
+<!--
+            <div>
+                <span style="font-weight: bold;font-size:110%">{{myreminds[0].date.getMonth()+1}}月 </span><span style="font-size:60%">{{myreminds[0].date.getFullYear()}}年</span>
                 <el-divider ></el-divider>
             </div>
+-->
+            <div v-for="(remind,i) in myreminds" :key="remind.id">
 
-            <div v-for="(remind) in $store.state.reminds" :key="remind.id">
+               <template  v-if="i != 0">
+                    <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
+                        <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
+                        <el-divider ></el-divider>
+                    </div>
+                </template>
+
+
                 <div v-if="remind.type == 'task'" class="list-box">
                     <el-row style="height: 75px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 75px;">
-                            <div class="flexbox1">
-                                <span style="font-weight: bold">2</span>
-                                <span style="font-size:70%">(水)</span>
-                            </div>
+                            <template  v-if="i != 0">
+                                <div v-if="!(remind.date.getFullYear() == myreminds[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox1">
+                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div  class="flexbox1">
+                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
+                                </div>
+                            </template>
 
                         </el-col>
                         <el-col :span="22" style="height: 75px;">
@@ -47,10 +64,19 @@
                 <div v-if="remind.type == 'event'" class="list-box">
                     <el-row style="height: 60px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 60px;">
-                            <div class="flexbox2">
-                                <span style="font-weight: bold">2</span>
-                                <span style="font-size:70%">(水)</span>
-                            </div>
+                            <template  v-if="i != 0">
+                                <div v-if="!(remind.date.getFullYear() == myreminds[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox2">
+                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div  class="flexbox2">
+                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>  
+                                </div>
+                            </template>
+
 
                         </el-col>
                         <el-col :span="22" style="height: 60px;">
@@ -79,16 +105,26 @@ export default {
     components: {
       TaskBox,
       EventBox
-    },data(){
+    },
+    data(){
         return{
+            myreminds:[],
+            dateT : ["日","月","火","水","木","金","土"],
             swiperOptionScroll:{   
                 direction: 'vertical',
                 mousewheel:true,
                 scrollContainer:true,
                 freeMode:true,
                 iOSEdgeSwipeDetection:true
-
             }
+        }
+    },
+    created(){
+        if(this.slideNum == 0){
+            this.myreminds = this.$store.state.reminds.sort(this.compareDate);
+        }else{
+            const my_category_id = this.$store.state.categorys[this.slideNum-1].id;
+            this.myreminds = this.$store.state.reminds.filter(v => v.category_id == my_category_id).sort(this.compareDate);
         }
     },
     methods:{
@@ -97,6 +133,9 @@ export default {
         },
         toArchiveView(){
             this.$router.push('/archive');
+        },
+        compareDate(a,b){
+            return a.date - b.date;
         }
     }
 }
@@ -138,7 +177,9 @@ export default {
 }
 
 
-
+.month-label{
+    margin-top: 35px;
+}
 
 
 .el-divider{
@@ -156,7 +197,7 @@ export default {
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 13px;
 }
 .flexbox3{
   display: flex;

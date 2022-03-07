@@ -59,6 +59,7 @@
 
          <!-- メイン -->   
             <swiper
+                
                 class="main-swiper"
                 :options="swiperOptionTop"
                 ref="swiperTop"
@@ -124,6 +125,9 @@ export default {
         }else{
             this.$router.push('/');
         }
+
+
+        /*
         if(this.$store.state.categorys.length == 0){
             console.log("カテゴリ読み込み")
             this.$store.dispatch('getCategorys')
@@ -132,15 +136,31 @@ export default {
             console.log("リマインズ読み込み")
             this.$store.dispatch('getReminds')
         }
+        */
+        
+        //this.$nextTick(function() {
+            if(this.$store.state.categorys.length == 0){
+                console.log("カテゴリ読み込み")
+                this.$store.dispatch('getCategorys')
+            }
+            if(this.$store.state.reminds.length == 0){
+                console.log("リマインズ読み込み")
+                this.$store.dispatch('getReminds')
+            }
+         //});
+        
 
 
 
     },
     mounted() {
+
         //window.addEventListener("orientationchange", this.changeDirection);
         this.$refs.swiperTop.$swiper.slideTo(this.$store.state.ListNum);
         this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
-        this.$store.commit('changeListNum',this.selectedIndex)
+        this.$store.commit('changeListNum',this.selectedIndex);
+
+        
     },
     updated(){
         //this.$refs.swiperThumbs.$swiper.slideTo(1);

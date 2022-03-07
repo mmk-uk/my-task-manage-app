@@ -76,7 +76,7 @@ export default new Vuex.Store({
         commit('initCategorys')
         const db = getFirestore();
         const categorysRef = collection(db,'users',state.userid,'categorys');
-        const categoryQuery = query(categorysRef,orderBy('order_num'))
+        const categoryQuery = query(categorysRef,orderBy('order_num'));
         const querySnapshot = await getDocs(categoryQuery);
         querySnapshot.forEach((doc) => {
             commit('newCategorys',{id: doc.data().id, title:doc.data().title, order_num:doc.data().order_num})
@@ -121,24 +121,11 @@ export default new Vuex.Store({
             )
         )
     },
+    //リマインズ操作
     async getReminds({ commit, state }){
       if(state.reminds.length === 0){
         commit('initReminds')
         const db = getFirestore();
-        const tasksRef = collection(db,'users',state.userid,'tasks');
-        const queryTasksSnapshot = await getDocs(tasksRef);
-        queryTasksSnapshot.forEach((doc) => {
-            const tmptask = {
-              type : "task",
-              id : doc.data().id,
-              category_id : doc.data().category_id,
-              title : doc.data().title,
-              date : doc.data().date.toDate(),
-              limit_time_flag : doc.data().limit_time_flag,
-              done_task :doc.data().done_task
-            }
-            commit('newReminds',tmptask)
-        });
         const eventsRef = collection(db,'users',state.userid,'events');
         const queryEventsSnapshot = await getDocs(eventsRef);
         queryEventsSnapshot.forEach((doc) => {
@@ -153,6 +140,21 @@ export default new Vuex.Store({
             }
             commit('newReminds',tmpevent)
         });
+        const tasksRef = collection(db,'users',state.userid,'tasks');
+        const queryTasksSnapshot = await getDocs(tasksRef);
+        queryTasksSnapshot.forEach((doc) => {
+            const tmptask = {
+              type : "task",
+              id : doc.data().id,
+              category_id : doc.data().category_id,
+              title : doc.data().title,
+              date : doc.data().date.toDate(),
+              limit_time_flag : doc.data().limit_time_flag,
+              done_task :doc.data().done_task
+            }
+            commit('newReminds',tmptask)
+        });
+
 
       }
     },
