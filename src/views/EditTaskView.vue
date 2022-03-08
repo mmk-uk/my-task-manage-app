@@ -150,6 +150,7 @@ export default {
             if(this.tasktimeset){
                 if(this.tasktitle.length>0 && this.taskdate && this.tasktime){
                     if((this.tasktitle != this.boxtask.title) || (this.taskdate != this.boxtask.date) || (this.tasktime != ((this.boxtask.date.getHours() < 10)? "0"+this.boxtask.date.getHours() : this.boxtask.date.getHours()) + ":" + ((this.boxtask.date.getMinutes() < 10)? "0"+this.boxtask.date.getMinutes() : this.boxtask.date.getMinutes()) )){
+                        console.log(this.tasktime)
                         var limitdate1 = new Date(  this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),Number(this.tasktime.split(':')[0]),Number(this.tasktime.split(':')[1]),0);
                         const newtask = {
                             type : "task",
@@ -161,9 +162,17 @@ export default {
                             done_task : this.boxtask.done_task
                         }
                         this.$store.dispatch('updateReminds',newtask);
-                        this.$router.push('/main');
+                        if(this.archivemode){
+                            this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                        }else{
+                            this.$router.push('/main');
+                        }
                     }else{
-                        this.$router.push('/main');
+                        if(this.archivemode){
+                            this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                        }else{
+                            this.$router.push('/main');
+                        }
                     }
                 }
             }else{
@@ -180,9 +189,17 @@ export default {
                             done_task : this.boxtask.done_task
                         }
                         this.$store.dispatch('updateReminds',newtask);
-                        this.$router.push('/main');
+                        if(this.archivemode){
+                            this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                        }else{
+                            this.$router.push('/main');
+                        }
                     }else{
-                        this.$router.push('/main');
+                        if(this.archivemode){
+                            this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                        }else{
+                            this.$router.push('/main');
+                        }
                     }
                 }
             }

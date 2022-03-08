@@ -38,20 +38,23 @@
                             </el-col>
                         </el-row>
                     </div>
+            
+            
+            <div v-if="myreminds.length > 0">
+                <span style="font-weight: bold;font-size:110%">{{myreminds[0].date.getMonth()+1}}月 </span><span style="font-size:60%">{{myreminds[0].date.getFullYear()}}年</span>
+                <el-divider ></el-divider>
+            </div>
+            
 
             <div v-for="(remind,i) in myreminds" :key="remind.id">
 
-            <template v-if="calcLeftdays(remind) < 0">
-
-               <template  v-if="i != 0">
-                    <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
-                        <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
-                        <el-divider ></el-divider>
-                    </div>
+                <template v-if="remind.type == 'task'">
+                <template  v-if="i != 0" >
+                        <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
+                            <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
+                            <el-divider ></el-divider>
+                        </div>
                 </template>
-
-
-                <template v-if="remind.type == 'task' || remind.done_task == true">
                 <div class="list-box">
                     <el-row style="height: 75px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 75px;">
@@ -75,10 +78,16 @@
                         </el-col>
                     </el-row>
                 </div>
-                </template>
+                </template>   
                 
                 
                 <div v-if="remind.type == 'event'" class="list-box">
+                <template  v-if="i != 0">
+                        <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
+                            <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
+                            <el-divider ></el-divider>
+                        </div>
+                </template>
                     <el-row style="height: 60px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 60px;">
                             <template  v-if="i != 0">
@@ -101,7 +110,7 @@
                         </el-col>
                     </el-row>
                 </div>     
-            </template>          
+                   
 
             </div>    
 
@@ -137,6 +146,8 @@ export default {
             dateT : ["日","月","火","水","木","金","土"],
         }
     },
+    created(){
+    },
     components: {
       TaskBox,
       EventBox
@@ -151,6 +162,9 @@ export default {
         },
         toMainView(){
             this.$router.push('/main');
+        },
+        firstRemindfilter(remind){
+            return this.calcLeftdays(remind) < 0 && remind.done_task == true
         }
     }
 }
@@ -206,9 +220,9 @@ export default {
 
 }
 
-.list-box{
+.month-label{
+    margin-top: 35px;
 }
-
 
 
 .el-divider{

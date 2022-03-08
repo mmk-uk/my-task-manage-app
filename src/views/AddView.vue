@@ -101,7 +101,7 @@
                             <span style="font-size:190%;font-weight: 900;">新規イベント</span>
                         </div>
                         <div  class="add-form-slide" style="margin-top:2px">
-                            <span>カテゴリ：生活</span>
+                            <span>カテゴリ：{{$store.state.categorys[$store.state.ListNum-1].title}}</span>
                         </div>
                         <div  class="add-form-slide" style="margin-top:15px;display:flex;">
                             <div style="margin-top:4px;margin-right:5px;">

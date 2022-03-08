@@ -1,17 +1,24 @@
 <template>
     <div class="task">
-        <div class="box-card">
+        <div class="box-card" v-bind:style="{background:taskColor(boxtask.done_task,leftdays)}">
 
             <div class="flexbox1">
                 <span style="margin-top: 16px;;font-size:70%">あと</span>
                 <span style="margin-top: 0px;font-size:105%">{{leftdays}}日</span>
             </div>
             
-            <div class="flexbox2">
-                <span style="margin-top: 2px;font-size:50%">~11:00</span>
-                <span style="margin-top: 3px;font-size:110%">{{boxtask.title}}</span>
-                <span style="margin-top: 3px;font-size:80%;opacity: 0.7">生活</span>
-            </div>      
+            <div v-if="slideNum == 0" class="flexbox2">
+                <span v-if="boxtask.limit_time_flag" style="margin-top: 3px;font-size:50%">〜{{formatDate(boxtask.date, 'HH:mm')}}</span>
+                <span v-if="boxtask.limit_time_flag" style="margin-top: 3px;font-size:110%">{{boxtask.title}}</span>
+                <span v-if="!boxtask.limit_time_flag" style="margin-top: 15px;font-size:110%">{{boxtask.title}}</span>
+                <span  style="margin-top: 3px;font-size:80%;opacity: 0.7">{{$store.state.categorys.find(c => c.id == boxtask.category_id).title}}</span>
+            </div>
+
+            <div v-else class="flexbox2">
+                <span v-if="boxtask.limit_time_flag" style="margin-top: 5px;font-size:50%">〜{{formatDate(boxtask.date, 'HH:mm')}}</span>
+                <span v-if="boxtask.limit_time_flag" style="margin-top: 9px;font-size:110%">{{boxtask.title}}</span>
+                <span v-if="!boxtask.limit_time_flag" style="margin-top: 23px;font-size:110%">{{boxtask.title}}</span>
+            </div>       
             <div class="flexbox3">
                 <div style="margin-top: 5px;">
                   <el-button v-if="!boxtask.done_task" circle  size="mini" class="my-button" @click="changeDone">
@@ -49,8 +56,31 @@ export default{
       //this.leftdays = parseInt((limitday - today)/ 1000 / 60 / 60 / 24);
   },
   methods:{
+     formatDate (date, format) {
+        format = format.replace(/yyyy/g, date.getFullYear());
+        format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
+        format = format.replace(/dd/g, ('0' + date.getDate()).slice(-2));
+        format = format.replace(/HH/g, ('0' + date.getHours()).slice(-2));
+        format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
+        format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
+        format = format.replace(/SSS/g, ('00' + date.getMilliseconds()).slice(-3));
+        return format;
+    },
     changeDone(){
       this.$store.dispatch('changeDoneTask',this.boxtask.id);
+    },
+    taskColor(done,leftdays){
+      if(done){
+        return "#AAAAAA";
+      }else{
+        if(leftdays <= 1){
+          return "#F38BA0";
+        }else if(leftdays <= 7){
+          return "#FFBCBC";
+        }else{
+          return "#CDF0EA";
+        }
+      }
     },
     toEditTask(){
       this.$router.push({name:'edittask',params:{boxtask:this.boxtask,archivemode:this.archivemode}});
@@ -70,7 +100,6 @@ export default{
 .box-card {
   height:75px; 
   padding:0px; 
-  background-color:#FFBCBC; 
   border-style:none;
   border-radius: 5px;
   display: flex;

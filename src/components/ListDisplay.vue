@@ -22,56 +22,65 @@
 
         <div class="list-view">
 
-<!--
-            <div>
-                <span style="font-weight: bold;font-size:110%">{{myreminds[0].date.getMonth()+1}}月 </span><span style="font-size:60%">{{myreminds[0].date.getFullYear()}}年</span>
+            
+            <div v-if="myreminds.length > 0">
+                <span style="font-weight: bold;font-size:110%">{{myreminds.filter(firstRemindfilter)[0].date.getMonth()+1}}月 </span><span style="font-size:60%">{{myreminds.filter(firstRemindfilter)[0].date.getFullYear()}}年</span>
                 <el-divider ></el-divider>
             </div>
+            
+
+            <div v-for="(remind,i) in myreminds.filter(firstRemindfilter)" :key="remind.id">
+            <!--
+            <template v-if="calcLeftdays(remind) >= 0 || remind.done_task == false" >
 -->
-            <div v-for="(remind,i) in myreminds" :key="remind.id">
 
-            <template v-if="calcLeftdays(remind) >= 0">
 
-               <template  v-if="i != 0">
-                    <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
-                        <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
-                        <el-divider ></el-divider>
+
+                <template v-if="remind.type == 'task' ">
+                    <template  v-if="i != 0">
+                            <div v-if="remind.date.getMonth() != myreminds.filter(firstRemindfilter)[i-1].date.getMonth()" class="month-label">
+                                <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
+                                <el-divider ></el-divider>
+                            </div>
+                    </template>
+                    
+                    <div class="list-box">
+                        <el-row style="height: 75px; margin-bottom: 8px;">
+                            <el-col :span="2" style="height: 75px;">
+                                <template  v-if="i != 0">
+                                    <div v-if="!(remind.date.getFullYear() == myreminds.filter(firstRemindfilter)[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox1">
+                                        <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                        <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div  class="flexbox1">
+                                        <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                        <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
+                                    </div>
+                                </template>
+
+                            </el-col>
+
+                            <el-col :span="22" style="height: 75px;">
+                                <TaskBox :slideNum="slideNum" :boxtask="remind" :leftdays="calcLeftdays(remind)" :archivemode="false"></TaskBox>  
+                            </el-col>
+                        </el-row>
                     </div>
-                </template>
-
-
-                <template v-if="remind.type == 'task' || remind.done_task == false">
-                <div class="list-box">
-                    <el-row style="height: 75px; margin-bottom: 8px;">
-                        <el-col :span="2" style="height: 75px;">
-                            <template  v-if="i != 0">
-                                <div v-if="!(remind.date.getFullYear() == myreminds[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox1">
-                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
-                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
-                                </div>
-                            </template>
-                            <template v-else>
-                                <div  class="flexbox1">
-                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
-                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
-                                </div>
-                            </template>
-
-                        </el-col>
-
-                        <el-col :span="22" style="height: 75px;">
-                            <TaskBox :slideNum="slideNum" :boxtask="remind" :leftdays="calcLeftdays(remind)" :archivemode="false"></TaskBox>  
-                        </el-col>
-                    </el-row>
-                </div>
                 </template>
                 
                 
                 <div v-if="remind.type == 'event'" class="list-box">
+                    <template  v-if="i != 0">
+                            <div v-if="remind.date.getMonth() != myreminds.filter(firstRemindfilter)[i-1].date.getMonth()" class="month-label">
+                                <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
+                                <el-divider ></el-divider>
+                            </div>
+                    </template>
                     <el-row style="height: 60px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 60px;">
                             <template  v-if="i != 0">
-                                <div v-if="!(remind.date.getFullYear() == myreminds[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox2">
+                                <div v-if="!(remind.date.getFullYear() == myreminds.filter(firstRemindfilter)[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox2">
                                     <span style="font-weight: bold">{{remind.date.getDate()}}</span>
                                     <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
                                 </div>
@@ -86,11 +95,13 @@
 
                         </el-col>
                         <el-col :span="22" style="height: 60px;">
-                            <EventBox :slideNum="slideNum" :boxevent="remind" :archivemode="false"></EventBox> 
+                            <EventBox :slideNum="slideNum" :boxevent="remind" :leftdays="calcLeftdays(remind)" :archivemode="false"></EventBox> 
                         </el-col>
                     </el-row>
-                </div>     
-            </template>          
+                </div>    
+            <!-- 
+            </template>      
+            -->    
 
             </div>         
         </div>
@@ -153,7 +164,8 @@ export default {
             scrollTo(0,0)
         },
         toArchiveView(){
-            this.$router.push({name:'archive',params:{slideNum:this.slideNum,categorytitle:this.categorytitle,myreminds:this.myreminds}});
+            //console.log(this.myreminds.filter(this.archiveRemindfilter))
+            this.$router.push({name:'archive',params:{slideNum:this.slideNum,categorytitle:this.categorytitle,myreminds:this.myreminds.filter(this.archiveRemindfilter)}});
         },
         calcLeftdays(remind){
             const today = new Date(this.$store.state.today.getFullYear(),this.$store.state.today.getMonth(),this.$store.state.today.getDate(),0,0,0);
@@ -164,6 +176,17 @@ export default {
         },
         compareDate(a,b){
             return a.date - b.date;
+        },
+        firstRemindfilter(remind){
+            return this.calcLeftdays(remind) >= 0 || remind.done_task == false
+        },
+        archiveRemindfilter(remind){
+            if(remind.type == 'task'){
+                return this.calcLeftdays(remind) < 0 && remind.done_task == true
+            }
+            if(remind.type == 'event'){
+                return this.calcLeftdays(remind) < 0 
+            }
         }
     }
 }

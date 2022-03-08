@@ -121,6 +121,14 @@ export default new Vuex.Store({
               await updateDoc(doc(db,'users',state.userid,'categorys', category.id),{order_num:category.order_num})
             )
         )
+        const delitereminds = state.reminds.filter(remind => remind.category_id == category.id)
+        delitereminds.forEach(remind => commit('removeReminds',remind.id))
+        await Promise.all(
+          delitereminds.map(
+            async remind => 
+              await deleteDoc(doc(db,'users',state.userid,'categorys', remind.id))
+            )
+        )
     },
     //リマインズ操作
     async getReminds({ commit, state }){

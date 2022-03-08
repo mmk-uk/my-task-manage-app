@@ -160,8 +160,9 @@ export default {
                     const newstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes());
                     const newendtime = ((this.boxevent.end_date.getHours() < 10)? "0"+this.boxevent.end_date.getHours() : this.boxevent.end_date.getHours()) + ":" + ((this.boxevent.end_date.getMinutes() < 10)? "0"+this.boxevent.end_date.getMinutes() : this.boxevent.end_date.getMinutes());
                     if((this.eventtitle != this.boxevent.title) || (this.eventdate != this.boxevent.date) || (this.eventstarttime != newstarttime) || (this.eventendtime != newendtime)){
+                        console.log(this.eventstarttime,this.eventendtime)
                         var limitdate1 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventstarttime.split(':')[0]),Number(this.eventstarttime.split(':')[1]),59);
-                        var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventendtime.split(':')[0]),Number(this.eventendtime.split(':')[1]),59);
+                        var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventendtime.HH),Number(this.eventendtime.mm),59);
 
                         const newevent = {
                             type : "event",
@@ -182,6 +183,7 @@ export default {
                 if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime ){    
                     const newstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes());
                     if((this.eventtitle != this.boxevent.title) || (this.eventdate != this.boxevent.date) || (this.eventstarttime != newstarttime)){
+                        console.log(this.eventstarttime,this.eventendtime)
                         var limitdate3 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventstarttime.split(':')[0]),Number(this.eventstarttime.split(':')[1]),59);
                         var limitdate4 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
 
