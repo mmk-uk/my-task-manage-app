@@ -147,7 +147,7 @@ export default {
             this.leftdaysArray.push(leftdays);
         }
 
-        
+        style="z-index: 9500;padding-top: 12px;padding-bottom:6px;border-radius:0;"
         new Date($store.state.today.getFullYear(),$store.state.today.getMonth(),$store.state.today.getDate(),0,0,0)
         parseInt((new Date(remind.date.getFullYear(),remind.date.getMonth(),remind.date.getDate(),0,0,0) - new Date($store.state.today.getFullYear(),$store.state.today.getMonth(),$store.state.today.getDate(),0,0,0))/ 1000 / 60 / 60 / 24);  
 
@@ -165,7 +165,7 @@ export default {
         },
         toArchiveView(){
             //console.log(this.myreminds.filter(this.archiveRemindfilter))
-            this.$router.push({name:'archive',params:{slideNum:this.slideNum,categorytitle:this.categorytitle,myreminds:this.myreminds.filter(this.archiveRemindfilter)}});
+            this.$router.push({name:'archive',params:{slideNum:this.slideNum,categorytitle:this.categorytitle,myreminds:this.myreminds.filter(this.archiveRemindfilter).reverse()}});
         },
         calcLeftdays(remind){
             const today = new Date(this.$store.state.today.getFullYear(),this.$store.state.today.getMonth(),this.$store.state.today.getDate(),0,0,0);

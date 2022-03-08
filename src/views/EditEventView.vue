@@ -1,5 +1,5 @@
 <template>
-    <div class="edittask-view">
+    <div class="editevent-view">
 
         <!-- ヘッダー -->
         <el-header height="100px">
@@ -65,6 +65,7 @@
                         format="yyyy-MM-dd"
                         name="datepick"
                         :language="ja"
+                        :highlighted="highlighted"
                     >
                     </date-picker>   
                 </div>
@@ -141,7 +142,10 @@ export default {
             eventtitle:'',
             eventdate:null,
             eventstarttime:null,
-            eventendtime:null
+            eventendtime:null,
+            highlighted:{
+                dates:[this.$store.state.today]
+            }
         }
     },
     created(){
@@ -149,7 +153,7 @@ export default {
         this.eventdate = this.boxevent.date
         this.eventstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes()) 
         if (this.boxevent.end_time_flag){
-            this.eventtimeend = this.eventtask.limit_time_flag
+            this.eventtimeend = this.boxevent.end_time_flag
             this.eventendtime = ((this.boxevent.end_date.getHours() < 10)? "0"+this.boxevent.end_date.getHours() : this.boxevent.end_date.getHours()) + ":" + ((this.boxevent.end_date.getMinutes() < 10)? "0"+this.boxevent.end_date.getMinutes() : this.boxevent.end_date.getMinutes()) 
         }
     },

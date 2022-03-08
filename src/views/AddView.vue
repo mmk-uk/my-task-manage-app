@@ -65,6 +65,7 @@
                                 name="datepick"
                                 format="yyyy-MM-dd"
                                 :language="ja"
+                                :highlighted="highlighted"
                             >
                             </date-picker>         
                         </div>
@@ -121,6 +122,7 @@
                                 format="yyyy-MM-dd"
                                 name="datepick"
                                 :language="ja"
+                                :highlighted="highlighted"
                             >
                             </date-picker>   
                         </div>
@@ -210,7 +212,11 @@ export default {
             eventtitle:'',
             eventdate:null,
             eventstarttime:null,
-            eventendtime:null
+            eventendtime:null,
+
+            highlighted:{
+                dates:[this.$store.state.today]
+            }
             
         }
     },

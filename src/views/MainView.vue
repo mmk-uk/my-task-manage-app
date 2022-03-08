@@ -11,7 +11,7 @@
                         </el-button>
                     </el-col>
                     <el-col :span="16" style="text-align: center; height: 60px; line-height: 135px;"> 
-                        <span style="font-size:110%;">{{$store.state.today.getFullYear()}}年{{$store.state.today.getMonth()+1}}月{{$store.state.today.getDate()}}日</span>
+                        <span style="font-size:110%;font-weight:bold">{{$store.state.today.getFullYear()}}年{{$store.state.today.getMonth()+1}}月{{$store.state.today.getDate()}}日</span>
                     </el-col>
                     <el-col :span="4" style="text-align: right; height: 60px; line-height: 135px;"> 
                         <el-button type="primary" circle class="my-button" @click="toCategoryView">
@@ -27,11 +27,13 @@
                 <el-row style="height: 40px;">
                     <el-col :span="6" style="height: 40px;">
                         
-                        <div class="all-tab" v-bind:class="[{'selected_all': selectedIndex === 0},{'not_selected_all':selectedIndex > 0}]">
-                        <el-button  type="text" v-on:click="ClickAllTab" style="padding-top: 18px;">
+                        <div class="all-tab" >
+                        <el-button  type="text" v-on:click="ClickAllTab">
+                            <div  style="z-index: 9500;width:100%;padding-top: 0px;padding-bottom:6px;border-radius:0;" v-bind:class="[{'selected_all': selectedIndex === 0},{'not_selected_all':selectedIndex > 0}]">
                             <span class="all-title">
-                                        全て
+                                        すべて
                             </span>
+                            </div>
                         </el-button>
                         </div>
                     </el-col>
@@ -47,9 +49,11 @@
 
                             </swiper-slide>
                             <swiper-slide v-for="(category) in $store.state.categorys" :key="category['order_num']" v-bind:class="{'selected_slide': category['order_num'] === selectedIndex}">
-                                <span class="category-title">
-                                    {{category['title']}}
-                                </span>
+                                <div style="width:100%;height:100%;text-align:center;padding-top:13px">
+                                    <span class="category-title" style="font-size: 15px;">
+                                        {{category['title']}}
+                                    </span>
+                                </div>
                             </swiper-slide>
                         </swiper>
 
@@ -316,10 +320,11 @@ export default {
 
 .all-tab{
     z-index: 9000;
-    height: 40px;
+    height: 45px;
     position: fixed;
-    width: 25vw;
+    width: 27vw;
     background-color: white;
+    text-align: center;
     
 }
 
@@ -347,8 +352,9 @@ export default {
 }
 
 .category-title {
-    width:100px;
+    width:100%;
     display: inline-block;
+    font-size: 15px;
 }
 
 
@@ -359,6 +365,7 @@ export default {
 .thumbs-swiper .swiper-wrapper .swiper-slide{
     margin-top:-4px;
     position: relative;
+    
 }
 
 .thumbs-swiper .swiper-wrapper .selected_slide {
@@ -367,13 +374,6 @@ export default {
 
 }
 
-.category-title{
-    position: absolute;
-	bottom: 0;
-    left: -5px;
-    font-size: 14px;
-    
-}
 
 
 .bottom-right{

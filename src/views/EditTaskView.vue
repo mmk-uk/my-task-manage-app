@@ -65,6 +65,7 @@
                         name="datepick"
                         format="yyyy-MM-dd"
                         :language="ja"
+                        :highlighted="highlighted"
                     >
                     </date-picker>         
                 </div>
@@ -131,6 +132,9 @@ export default {
             tasktitle:'',
             taskdate:null,
             tasktime:null,
+            highlighted:{
+                dates:[this.$store.state.today]
+            }
         }
     },
     created(){
@@ -151,7 +155,8 @@ export default {
                 if(this.tasktitle.length>0 && this.taskdate && this.tasktime){
                     if((this.tasktitle != this.boxtask.title) || (this.taskdate != this.boxtask.date) || (this.tasktime != ((this.boxtask.date.getHours() < 10)? "0"+this.boxtask.date.getHours() : this.boxtask.date.getHours()) + ":" + ((this.boxtask.date.getMinutes() < 10)? "0"+this.boxtask.date.getMinutes() : this.boxtask.date.getMinutes()) )){
                         console.log(this.tasktime)
-                        var limitdate1 = new Date(  this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),Number(this.tasktime.split(':')[0]),Number(this.tasktime.split(':')[1]),0);
+                        //split -> HH.mm
+                        var limitdate1 = new Date(  this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),Number(this.tasktime.HH),Number(this.tasktime.mm),0);
                         const newtask = {
                             type : "task",
                             id : this.boxtask.id,

@@ -2,7 +2,12 @@
     <div class="task">
         <div class="box-card" v-bind:style="{background:taskColor(boxtask.done_task,leftdays)}">
 
-            <div class="flexbox1">
+            <div v-if="leftdays < 0" class="flexbox1">
+                
+                <span style="margin-top: 16px;font-size:105%">{{Math.abs(leftdays)}}日</span>
+                <span style="margin-top: 2px;;font-size:70%">経過</span>
+            </div>
+            <div v-else class="flexbox1">
                 <span style="margin-top: 16px;;font-size:70%">あと</span>
                 <span style="margin-top: 0px;font-size:105%">{{leftdays}}日</span>
             </div>
