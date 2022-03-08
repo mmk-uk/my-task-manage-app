@@ -28,7 +28,7 @@
                     <el-col :span="6" style="height: 45px;">
                         
                         <div class="all-tab" >
-                        <el-button  type="text" v-on:click="ClickAllTab">
+                        <el-button  type="text" v-on:click="ClickAllTab" style="width:100%">
                             <div  style="z-index: 9500;width:100%;padding-top: 0px;padding-bottom:6px;border-radius:0;" v-bind:class="[{'selected_all': selectedIndex === 0},{'not_selected_all':selectedIndex > 0}]">
                             <span class="all-title">
                                         すべて

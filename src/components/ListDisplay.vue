@@ -48,7 +48,7 @@
                         <el-row style="height: 75px; margin-bottom: 8px;">
                             <el-col :span="2" style="height: 75px;">
                                 <template  v-if="i != 0">
-                                    <div v-if="!(remind.date.getFullYear() == myreminds.filter(firstRemindfilter)[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox1">
+                                    <div v-if="!(remind.date.getFullYear() == myreminds.filter(firstRemindfilter)[i-1].date.getFullYear() && remind.date.getMonth() == myreminds.filter(firstRemindfilter)[i-1].date.getMonth() && remind.date.getDate() == myreminds.filter(firstRemindfilter)[i-1].date.getDate())" class="flexbox1">
                                         <span style="font-weight: bold">{{remind.date.getDate()}}</span>
                                         <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
                                     </div>
@@ -80,7 +80,7 @@
                     <el-row style="height: 60px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 60px;">
                             <template  v-if="i != 0">
-                                <div v-if="!(remind.date.getFullYear() == myreminds.filter(firstRemindfilter)[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox2">
+                                <div v-if="!(remind.date.getFullYear() == myreminds.filter(firstRemindfilter)[i-1].date.getFullYear() && remind.date.getMonth() == myreminds.filter(firstRemindfilter)[i-1].date.getMonth() && remind.date.getDate() == myreminds.filter(firstRemindfilter)[i-1].date.getDate())" class="flexbox2">
                                     <span style="font-weight: bold">{{remind.date.getDate()}}</span>
                                     <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
                                 </div>
