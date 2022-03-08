@@ -153,10 +153,10 @@ export default {
             //console.log(this.tasktime != ((this.boxtask.date.getHours() < 10)? "0"+this.boxtask.date.getHours() : this.boxtask.date.getHours()) + ":" + ((this.boxtask.date.getMinutes() < 10)? "0"+this.boxtask.date.getMinutes() : this.boxtask.date.getMinutes()))
             if(this.tasktimeset){
                 if(this.tasktitle.length>0 && this.taskdate && this.tasktime){
-                    if((this.tasktitle != this.boxtask.title) || (this.taskdate != this.boxtask.date) || (this.tasktime != ((this.boxtask.date.getHours() < 10)? "0"+this.boxtask.date.getHours() : this.boxtask.date.getHours()) + ":" + ((this.boxtask.date.getMinutes() < 10)? "0"+this.boxtask.date.getMinutes() : this.boxtask.date.getMinutes()) )){
+                    if((this.tasktitle != this.boxtask.title) || (this.taskdate != this.boxtask.date) || ((typeof(this.tasktime) == 'string'?this.tasktime:this.tasktime.HH + ":" + this.tasktime.mm) != ((this.boxtask.date.getHours() < 10)? "0"+this.boxtask.date.getHours() : this.boxtask.date.getHours()) + ":" + ((this.boxtask.date.getMinutes() < 10)? "0"+this.boxtask.date.getMinutes() : this.boxtask.date.getMinutes()) ) || (this.tasktimeset != this.boxtask.limit_time_flag)){
                         console.log(this.tasktime)
                         //split -> HH.mm
-                        var limitdate1 = new Date(  this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),Number(this.tasktime.HH),Number(this.tasktime.mm),0);
+                        var limitdate1 = new Date(  this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),Number(typeof(this.tasktime) == 'string'?this.tasktime.split(':')[0]:this.tasktime.HH),Number(typeof(this.tasktime) == 'string'?this.tasktime.split(':')[1]:this.tasktime.mm),0);
                         const newtask = {
                             type : "task",
                             id : this.boxtask.id,
@@ -182,7 +182,7 @@ export default {
                 }
             }else{
                 if(this.tasktitle.length>0 && this.taskdate ){  
-                    if((this.tasktitle != this.boxtask.title) || (this.taskdate != this.boxtask.date)){
+                    if((this.tasktitle != this.boxtask.title) || (this.taskdate != this.boxtask.date) || (this.tasktimeset != this.boxtask.limit_time_flag)){
                         var limitdate2 = new Date(this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),23,59,59);
                         const newtask = {
                             type : "task",

@@ -4,7 +4,7 @@
         <div class="category-label">
             <el-row>
                 <el-col :span="20" class="flexbox3">
-                    <span style="font-size:190%;font-weight: 900;margin-top:10px;margin-left:5px">
+                    <span style="font-size:190%;font-weight: 900;margin-top:0px;margin-left:5px">
                         {{categorytitle}}
                     </span>
                     <!--
@@ -147,7 +147,7 @@ export default {
             this.leftdaysArray.push(leftdays);
         }
 
-        style="z-index: 9500;padding-top: 12px;padding-bottom:6px;border-radius:0;"
+        
         new Date($store.state.today.getFullYear(),$store.state.today.getMonth(),$store.state.today.getDate(),0,0,0)
         parseInt((new Date(remind.date.getFullYear(),remind.date.getMonth(),remind.date.getDate(),0,0,0) - new Date($store.state.today.getFullYear(),$store.state.today.getMonth(),$store.state.today.getDate(),0,0,0))/ 1000 / 60 / 60 / 24);  
 
@@ -207,7 +207,7 @@ export default {
     
     margin-left: 10px;
     margin-right: 5px;
-    margin-top: 160px;
+    margin-top: 150px;
 
 }
 .category-label{

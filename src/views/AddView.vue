@@ -242,7 +242,7 @@ export default {
         addTask(){
             if (this.tasktimeset) {
                 if(this.tasktitle.length>0 && this.taskdate && this.tasktime){     
-                    var limitdate1 = new Date(this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),Number(this.tasktime.HH),Number(this.tasktime.mm),0);
+                    var limitdate1 = new Date(this.taskdate.getFullYear(),this.taskdate.getMonth(),this.taskdate.getDate(),Number(typeof(this.tasktime) == 'string'?this.tasktime.split(':')[0]:this.tasktime.HH),Number(typeof(this.tasktime) == 'string'?this.tasktime.split(':')[1]:this.tasktime.mm),0);
                     const newtask = {
                         type : "task",
                         id : uuidv4(),
@@ -275,8 +275,8 @@ export default {
         addEvent(){
             if (this.eventtimeend) {
                 if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime && this.eventendtime){     
-                    var limitdate1 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventstarttime.HH),Number(this.eventstarttime.mm),59);
-                    var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventendtime.HH),Number(this.eventendtime.mm),59);
+                    var limitdate1 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),59);
+                    var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[0]:this.eventendtime.HH),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[1]:this.eventendtime.mm),59);
 
                     const newevent = {
                         type : "event",
@@ -292,7 +292,7 @@ export default {
                 }
             }else{
                 if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime ){     
-                    var limitdate3 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(this.eventstarttime.HH),Number(this.eventstarttime.mm),0);
+                    var limitdate3 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),0);
                     var limitdate4 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
 
                     const newevent = {

@@ -24,8 +24,8 @@
 
          <!-- タブ -->
             <div class="tab-area">
-                <el-row style="height: 40px;">
-                    <el-col :span="6" style="height: 40px;">
+                <el-row style="height: 45px;background-color:white">
+                    <el-col :span="6" style="height: 45px;">
                         
                         <div class="all-tab" >
                         <el-button  type="text" v-on:click="ClickAllTab">
@@ -37,7 +37,7 @@
                         </el-button>
                         </div>
                     </el-col>
-                    <el-col :span="18" style="height: 40px;text-align:center">
+                    <el-col :span="18" style="height: 45px;text-align:center">
                         <swiper
                             :options="swiperOptionThumbs" 
                             class="thumbs-swiper gallery-thumbs" 
