@@ -11,7 +11,7 @@
                         </el-button>
                     </el-col>
                     <el-col :span="16" style="text-align: center; height: 60px; line-height: 135px;"> 
-                        <span style="font-size:110%;">2022年2月24日</span>
+                        <span style="font-size:110%;">{{$store.state.today.getFullYear()}}年{{$store.state.today.getMonth()+1}}月{{$store.state.today.getDate()}}日</span>
                     </el-col>
                     <el-col :span="4" style="text-align: right; height: 60px; line-height: 135px;"> 
                         <el-button type="primary" circle class="my-button" @click="toCategoryView">
@@ -71,10 +71,10 @@
                 @slidePrevTransitionEnd="swipePrevEnd"
             >
                 <swiper-slide>
-                        <ListDisplay :slideNum=0 :categorytitle="'全て'"></ListDisplay>
+                        <ListDisplay :slideNum=0 :categorytitle="'全て'" :myreminds="myreminds"></ListDisplay>
                 </swiper-slide>
                 <swiper-slide v-for="(category) in $store.state.categorys" :key="category['order_num']">
-                        <ListDisplay :slideNum="category['order_num']" :categorytitle="category['title']"></ListDisplay>
+                        <ListDisplay :slideNum="category['order_num']" :categorytitle="category['title']" :myreminds="myreminds.filter(v => v.category_id == category.id).sort(compareDate)"></ListDisplay>
                 </swiper-slide>
             </swiper>
 
@@ -97,6 +97,8 @@ export default {
     },
     data(){
         return{
+            myreminds:[],
+            categoryreminds:[],
             selectedIndex: 0,
             touchPointX:0,
             slides:[["スライド1",1],["スライド2",2],["スライド3",3],["スライド4",4],["スライド5",5],["スライド6",6],["スライド7",7],["スライド8",8]],
@@ -127,7 +129,7 @@ export default {
         }
 
 
-        /*
+        
         if(this.$store.state.categorys.length == 0){
             console.log("カテゴリ読み込み")
             this.$store.dispatch('getCategorys')
@@ -136,9 +138,9 @@ export default {
             console.log("リマインズ読み込み")
             this.$store.dispatch('getReminds')
         }
-        */
         
-        //this.$nextTick(function() {
+        /*
+        this.$nextTick(function() {
             if(this.$store.state.categorys.length == 0){
                 console.log("カテゴリ読み込み")
                 this.$store.dispatch('getCategorys')
@@ -147,7 +149,8 @@ export default {
                 console.log("リマインズ読み込み")
                 this.$store.dispatch('getReminds')
             }
-         //});
+         });
+         */
         
 
 
@@ -159,6 +162,12 @@ export default {
         this.$refs.swiperTop.$swiper.slideTo(this.$store.state.ListNum);
         this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
         this.$store.commit('changeListNum',this.selectedIndex);
+        this.$nextTick(function() {
+            this.myreminds = this.$store.state.reminds.sort(this.compareDate);
+        })
+
+        // window.addEventListener("popstate", this.handlePopstate);
+
 
         
     },
@@ -237,6 +246,9 @@ export default {
         },
         swipeTab(){
             //console.log(this.$refs.swiperThumbs.$swiper.activeIndex)
+        },
+        compareDate(a,b){
+            return a.date - b.date;
         }
     },
     watch:{

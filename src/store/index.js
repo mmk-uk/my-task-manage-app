@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    today:new Date(),
     userid:"",
     ListNum:0,
     categorys:[],
@@ -126,106 +127,99 @@ export default new Vuex.Store({
       if(state.reminds.length === 0){
         commit('initReminds')
         const db = getFirestore();
-        const eventsRef = collection(db,'users',state.userid,'events');
-        const queryEventsSnapshot = await getDocs(eventsRef);
-        queryEventsSnapshot.forEach((doc) => {
-            const tmpevent = {
-              type : "event",
-              id : doc.data().id,
-              category_id : doc.data().category_id,
-              title : doc.data().title,
-              date : doc.data().date.toDate(),
-              end_time_flag : doc.data().end_time_flag,
-              end_date :doc.data().end_date.toDate()
-            }
-            commit('newReminds',tmpevent)
-        });
-        const tasksRef = collection(db,'users',state.userid,'tasks');
-        const queryTasksSnapshot = await getDocs(tasksRef);
+        const remindsRef = collection(db,'users',state.userid,'reminds');
+        const remindsQuery = query(remindsRef,orderBy('date'));
+        const queryTasksSnapshot = await getDocs(remindsQuery);
         queryTasksSnapshot.forEach((doc) => {
-            const tmptask = {
-              type : "task",
-              id : doc.data().id,
-              category_id : doc.data().category_id,
-              title : doc.data().title,
-              date : doc.data().date.toDate(),
-              limit_time_flag : doc.data().limit_time_flag,
-              done_task :doc.data().done_task
+            if(doc.data().type=='task'){
+              const tmptask = {
+                type : "task",
+                id : doc.data().id,
+                category_id : doc.data().category_id,
+                title : doc.data().title,
+                date : doc.data().date.toDate(),
+                limit_time_flag : doc.data().limit_time_flag,
+                done_task :doc.data().done_task
+              }
+              commit('newReminds',tmptask)
             }
-            commit('newReminds',tmptask)
+            if(doc.data().type=='event'){
+              const tmpevent = {
+                type : "event",
+                id : doc.data().id,
+                category_id : doc.data().category_id,
+                title : doc.data().title,
+                date : doc.data().date.toDate(),
+                end_time_flag : doc.data().end_time_flag,
+                end_date :doc.data().end_date.toDate()
+              }
+              commit('newReminds',tmpevent)
+            }
         });
-
-
+      }
+      console.log(state.reminds)
+    },
+    async addReminds({ commit, state }, newremind){
+      const db = getFirestore();
+      commit('newReminds',newremind);
+      const remindRef = doc(db,'users',state.userid,'reminds', newremind.id);
+      if(newremind.type =='task'){
+        const addnewtask = {
+          type : "task",
+          id : newremind.id,
+          category_id : newremind.category_id,
+          title :  newremind.title,
+          date :  Timestamp.fromDate(newremind.date),
+          limit_time_flag : newremind.limit_time_flag,
+          done_task : newremind.done_task
+        }
+        await setDoc(remindRef,addnewtask);
+      } 
+      if(newremind.type =='event'){
+          const addnewevent = {
+            type : "event",
+            id : newremind.id,
+            category_id : newremind.category_id,
+            title :  newremind.title,
+            date :  Timestamp.fromDate(newremind.date),
+            end_date : Timestamp.fromDate(newremind.end_date),
+            end_time_flag : newremind.end_time_flag
+          }
+          await setDoc(remindRef,addnewevent);
       }
     },
-    async addTasks({ commit, state }, newtask){
+    async updateReminds({ commit, state }, newremind){
       const db = getFirestore();
-      commit('newReminds',newtask);
-      const addnewtask = {
-        id : newtask.id,
-        category_id : newtask.category_id,
-        title :  newtask.title,
-        date :  Timestamp.fromDate(newtask.date),
-        limit_time_flag : newtask.limit_time_flag,
-        done_task : newtask.done_task
+      commit('changeReminds',newremind);
+      const remindRef = doc(db,'users',state.userid,'reminds', newremind.id);
+      if(newremind.type =='task'){
+        const changenewtask = {
+          title :  newremind.title,
+          date :  Timestamp.fromDate(newremind.date),
+          limit_time_flag : newremind.limit_time_flag
+        }
+        await updateDoc(remindRef,changenewtask);
       }
-      const taskRef = doc(db,'users',state.userid,'tasks', newtask.id);
-      await setDoc(taskRef,addnewtask);
-    }, 
-    async addEvents({ commit, state }, newevent){
-      const db = getFirestore();
-      commit('newReminds',newevent);
-      const addnewevent = {
-        id : newevent.id,
-        category_id : newevent.category_id,
-        title :  newevent.title,
-        date :  Timestamp.fromDate(newevent.date),
-        end_date : Timestamp.fromDate(newevent.end_date),
-        end_time_flag : newevent.end_time_flag
+      if(newremind.type =='event'){
+        const changenewevent = {
+          title : newremind.title,
+          date :  Timestamp.fromDate(newremind.date),
+          end_date : Timestamp.fromDate(newremind.end_date),
+          end_time_flag : newremind.end_time_flag
+        }
+        await updateDoc(remindRef,changenewevent);
       }
-      const eventRef = doc(db,'users',state.userid,'events', newevent.id);
-      await setDoc(eventRef,addnewevent);
     },
-    async updateTasks({ commit, state }, newtask){
-      const db = getFirestore();
-      commit('changeReminds',newtask);
-      //console.log(typeof(newtask.date))
-      //console.log(newtask.date)
-      const changenewtask = {
-        title :  newtask.title,
-        date :  Timestamp.fromDate(newtask.date),
-        limit_time_flag : newtask.limit_time_flag
-      }
-      const taskRef = doc(db,'users',state.userid,'tasks', newtask.id);
-      await updateDoc(taskRef,changenewtask);
-    }, 
-    async updateEvents({ commit, state }, newevent){
-      const db = getFirestore();
-      commit('changeReminds',newevent);
-      const changenewevent = {
-        title :  newevent.title,
-        date :  Timestamp.fromDate(newevent.date),
-        end_date : Timestamp.fromDate(newevent.end_date),
-        end_time_flag : newevent.end_time_flag
-      }
-      const eventRef = doc(db,'users',state.userid,'events', newevent.id);
-      await updateDoc(eventRef,changenewevent);
-    },
-    async deleteTask({ commit, state }, task_id){
+    async deleteRemind({ commit, state }, remind_id){
         const db = getFirestore();
-        commit('removeReminds',task_id);
-        await deleteDoc(doc(db,'users',state.userid,'tasks', task_id));
-    },
-    async deleteEvent({ commit, state }, event_id){
-        const db = getFirestore();
-        commit('removeReminds',event_id);
-        await deleteDoc(doc(db,'users',state.userid,'events', event_id));
+        commit('removeReminds',remind_id);
+        await deleteDoc(doc(db,'users',state.userid,'reminds', remind_id));
     },
     async changeDoneTask({ commit, state }, task_id){
       const db = getFirestore();
       commit('changeDone',task_id);
       const index = state.reminds.findIndex((v) => v.id === task_id)
-      const taskRef = doc(db,'users',state.userid,'tasks', task_id);
+      const taskRef = doc(db,'users',state.userid,'reminds', task_id);
       await updateDoc(taskRef,{done_task:state.reminds[index].done_task});
     }
 

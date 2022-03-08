@@ -24,188 +24,86 @@
 
 
             <div class="my-main">
-                <div class="list-display">
-                     <!-- カテゴリ名 -->  
+
+             <div class="list-display">
                     <div class="category-label">
                         <el-row>
-                            <el-col :span="20" class="flexbox3">
-                                <div style="margin-top:13px">
+                            <el-col :span="24" class="flexbox3">
+                                <div style="margin-top:15px">
                                     <mdicon name="check-circle-outline" size="35" />
                                 </div>
                                 <span style="font-size:190%;font-weight: 900;margin-top:10px;margin-left:5px">
-                                    カテゴリタイトル
+                                    {{categorytitle}}
                                 </span>
-                                
-                            </el-col>
-                            <el-col :span="4" style="text-align: right;">
-
                             </el-col>
                         </el-row>
                     </div>
 
+            <div v-for="(remind,i) in myreminds" :key="remind.id">
 
-                    <!-- タスク・イベント表示 -->    
-                    <div class="month-label">
-                        <span style="font-weight: bold;font-size:110%">3月 </span><span style="font-size:60%">2022年</span>
+            <template v-if="calcLeftdays(remind) < 0">
+
+               <template  v-if="i != 0">
+                    <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
+                        <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
                         <el-divider ></el-divider>
                     </div>
+                </template>
 
-                    <div class="list-box">
-                        <el-row style="height: 75px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 75px;">
-                                <div class="flexbox1">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
+
+                <template v-if="remind.type == 'task' || remind.done_task == true">
+                <div class="list-box">
+                    <el-row style="height: 75px; margin-bottom: 8px;">
+                        <el-col :span="2" style="height: 75px;">
+                            <template  v-if="i != 0">
+                                <div v-if="!(remind.date.getFullYear() == myreminds[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox1">
+                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
                                 </div>
-
-                            </el-col>
-                            <el-col :span="22" style="height: 75px;">
-                                <TaskBox></TaskBox>  
-                            </el-col>
-                        </el-row>
-                    </div>
-
-                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
+                            </template>
+                            <template v-else>
+                                <div  class="flexbox1">
+                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
                                 </div>
+                            </template>
 
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>
+                        </el-col>
 
-
-
-
-
-
-                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
+                        <el-col :span="22" style="height: 75px;">
+                            <TaskBox :slideNum="slideNum" :boxtask="remind" :leftdays="calcLeftdays(remind)" :archivemode="true"></TaskBox>  
+                        </el-col>
+                    </el-row>
+                </div>
+                </template>
+                
+                
+                <div v-if="remind.type == 'event'" class="list-box">
+                    <el-row style="height: 60px; margin-bottom: 8px;">
+                        <el-col :span="2" style="height: 60px;">
+                            <template  v-if="i != 0">
+                                <div v-if="!(remind.date.getFullYear() == myreminds[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox2">
+                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
                                 </div>
-
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>
-
-                                        <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
+                            </template>
+                            <template v-else>
+                                <div  class="flexbox2">
+                                    <span style="font-weight: bold">{{remind.date.getDate()}}</span>
+                                    <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>  
                                 </div>
+                            </template>
 
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
-                                </div>
 
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
-                                </div>
+                        </el-col>
+                        <el-col :span="22" style="height: 60px;">
+                            <EventBox :slideNum="slideNum" :boxevent="remind" :archivemode="true" ></EventBox> 
+                        </el-col>
+                    </el-row>
+                </div>     
+            </template>          
 
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
-                                </div>
-
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
-                                </div>
-
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
-                                </div>
-
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
-                                </div>
-
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>                    <div class="list-box">
-                        <el-row style="height: 60px; margin-bottom: 8px;">
-                            <el-col :span="2" style="height: 60px;">
-                                <div class="flexbox2">
-                                    <span style="font-weight: bold">2</span>
-                                    <span style="font-size:70%">(水)</span>
-                                </div>
-
-                            </el-col>
-                            <el-col :span="22" style="height: 60px;">
-                                <EventBox></EventBox> 
-                            </el-col>
-                        </el-row>
-                    </div>
-
+            </div>    
 
 
 
@@ -233,11 +131,24 @@ import TaskBox from "@/components/TaskBox";
 import EventBox from "@/components/EventBox";
 
 export default {
+    props:["slideNum","categorytitle","myreminds"],
+    data(){
+        return{
+            dateT : ["日","月","火","水","木","金","土"],
+        }
+    },
     components: {
       TaskBox,
       EventBox
     },
     methods:{
+        calcLeftdays(remind){
+            const today = new Date(this.$store.state.today.getFullYear(),this.$store.state.today.getMonth(),this.$store.state.today.getDate(),0,0,0);
+            const limitday = new Date(remind.date.getFullYear(),remind.date.getMonth(),remind.date.getDate(),0,0,0);
+            const leftdays = parseInt((limitday - today)/ 1000 / 60 / 60 / 24);
+            return leftdays
+            
+        },
         toMainView(){
             this.$router.push('/main');
         }

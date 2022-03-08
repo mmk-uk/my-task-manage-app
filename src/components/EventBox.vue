@@ -22,10 +22,10 @@
 
 <script>
 export default{
-  props:["boxevent"],
+  props:["boxevent","archivemode"],
   methods:{
     toEditEvent(){
-      this.$router.push({name:'editevent',params:{boxevent:this.boxevent}});
+      this.$router.push({name:'editevent',params:{boxevent:this.boxevent,archivemode:this.archivemode}});
     }
   }
 }

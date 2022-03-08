@@ -30,6 +30,8 @@
 -->
             <div v-for="(remind,i) in myreminds" :key="remind.id">
 
+            <template v-if="calcLeftdays(remind) >= 0">
+
                <template  v-if="i != 0">
                     <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
                         <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
@@ -38,7 +40,8 @@
                 </template>
 
 
-                <div v-if="remind.type == 'task'" class="list-box">
+                <template v-if="remind.type == 'task' || remind.done_task == false">
+                <div class="list-box">
                     <el-row style="height: 75px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 75px;">
                             <template  v-if="i != 0">
@@ -55,12 +58,15 @@
                             </template>
 
                         </el-col>
+
                         <el-col :span="22" style="height: 75px;">
-                            <TaskBox :slideNum="slideNum" :boxtask="remind"></TaskBox>  
+                            <TaskBox :slideNum="slideNum" :boxtask="remind" :leftdays="calcLeftdays(remind)" :archivemode="false"></TaskBox>  
                         </el-col>
                     </el-row>
                 </div>
-    
+                </template>
+                
+                
                 <div v-if="remind.type == 'event'" class="list-box">
                     <el-row style="height: 60px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 60px;">
@@ -80,10 +86,11 @@
 
                         </el-col>
                         <el-col :span="22" style="height: 60px;">
-                            <EventBox :slideNum="slideNum" :boxevent="remind"></EventBox> 
+                            <EventBox :slideNum="slideNum" :boxevent="remind" :archivemode="false"></EventBox> 
                         </el-col>
                     </el-row>
-                </div>               
+                </div>     
+            </template>          
 
             </div>         
         </div>
@@ -101,14 +108,13 @@ import TaskBox from "@/components/TaskBox";
 import EventBox from "@/components/EventBox";
 
 export default {
-     props: ["slideNum","categorytitle"],
+     props: ["slideNum","categorytitle","myreminds"],
     components: {
       TaskBox,
       EventBox
     },
     data(){
         return{
-            myreminds:[],
             dateT : ["日","月","火","水","木","金","土"],
             swiperOptionScroll:{   
                 direction: 'vertical',
@@ -119,20 +125,42 @@ export default {
             }
         }
     },
-    created(){
+    mounted(){
+        /*
+         console.log(this.myreminds)
+        for(const remind in this.myreminds){
+            const today = new Date(this.$store.state.today.getFullYear(),this.$store.state.today.getMonth(),this.$store.state.today.getDate(),0,0,0);
+            const limitday = new Date(remind.date.getFullYear(),remind.date.getMonth(),remind.date.getDate(),0,0,0);
+            const leftdays = parseInt((limitday - today)/ 1000 / 60 / 60 / 24);
+            console.log(leftdays)
+            this.leftdaysArray.push(leftdays);
+        }
+
+        
+        new Date($store.state.today.getFullYear(),$store.state.today.getMonth(),$store.state.today.getDate(),0,0,0)
+        parseInt((new Date(remind.date.getFullYear(),remind.date.getMonth(),remind.date.getDate(),0,0,0) - new Date($store.state.today.getFullYear(),$store.state.today.getMonth(),$store.state.today.getDate(),0,0,0))/ 1000 / 60 / 60 / 24);  
+
         if(this.slideNum == 0){
             this.myreminds = this.$store.state.reminds.sort(this.compareDate);
         }else{
             const my_category_id = this.$store.state.categorys[this.slideNum-1].id;
             this.myreminds = this.$store.state.reminds.filter(v => v.category_id == my_category_id).sort(this.compareDate);
         }
+        */
     },
     methods:{
         moveTop(){
             scrollTo(0,0)
         },
         toArchiveView(){
-            this.$router.push('/archive');
+            this.$router.push({name:'archive',params:{slideNum:this.slideNum,categorytitle:this.categorytitle,myreminds:this.myreminds}});
+        },
+        calcLeftdays(remind){
+            const today = new Date(this.$store.state.today.getFullYear(),this.$store.state.today.getMonth(),this.$store.state.today.getDate(),0,0,0);
+            const limitday = new Date(remind.date.getFullYear(),remind.date.getMonth(),remind.date.getDate(),0,0,0);
+            const leftdays = parseInt((limitday - today)/ 1000 / 60 / 60 / 24);
+            return leftdays
+            
         },
         compareDate(a,b){
             return a.date - b.date;

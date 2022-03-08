@@ -142,7 +142,8 @@ export default{
                 title: 'やること',
                 order_num: 1
             });
-            await setDoc(doc(db,'users',userid,'tasks',taskid),{
+            await setDoc(doc(db,'users',userid,'reminds',taskid),{
+                type:'task',
                 id: taskid,
                 category_id: categoryid,
                 title: 'タスク1',
@@ -150,7 +151,8 @@ export default{
                 limit_time_flag : false,
                 done_task : false
             });
-            await setDoc(doc(db,'users',userid,'events',eventid),{
+            await setDoc(doc(db,'users',userid,'reminds',eventid),{
+                type:'event',
                 id: eventid,
                 category_id: categoryid,
                 title: 'イベント1',

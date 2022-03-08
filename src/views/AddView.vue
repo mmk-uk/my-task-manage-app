@@ -246,7 +246,7 @@ export default {
                         limit_time_flag : true,
                         done_task : false
                     }
-                    this.$store.dispatch('addTasks',newtask);
+                    this.$store.dispatch('addReminds',newtask);
                     this.$router.push('/main');
                 }
             }else{
@@ -261,7 +261,7 @@ export default {
                         limit_time_flag : false,
                         done_task : false
                     }
-                    this.$store.dispatch('addTasks',newtask);
+                    this.$store.dispatch('addReminds',newtask);
                     this.$router.push('/main');
                 }
             }
@@ -281,7 +281,7 @@ export default {
                         end_date : limitdate2,
                         end_time_flag : true
                     }
-                    this.$store.dispatch('addEvents',newevent);
+                    this.$store.dispatch('addReminds',newevent);
                     this.$router.push('/main');
                 }
             }else{
@@ -298,7 +298,7 @@ export default {
                         end_date : limitdate4,
                         end_time_flag : false
                     }
-                    this.$store.dispatch('addEvents',newevent);
+                    this.$store.dispatch('addReminds',newevent);
                     this.$router.push('/main');
                 }
             }

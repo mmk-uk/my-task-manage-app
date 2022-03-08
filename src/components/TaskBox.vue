@@ -4,7 +4,7 @@
 
             <div class="flexbox1">
                 <span style="margin-top: 16px;;font-size:70%">あと</span>
-                <span style="margin-top: 0px;font-size:105%">2日</span>
+                <span style="margin-top: 0px;font-size:105%">{{leftdays}}日</span>
             </div>
             
             <div class="flexbox2">
@@ -38,13 +38,22 @@
 
 <script>
 export default{
-  props:["slideNum","boxtask"],
+  props:["slideNum","boxtask","leftdays","archivemode"],
+  data(){
+    return{
+    }
+  },
+  created(){
+      //const today = new Date(this.$store.state.today.getFullYear(),this.$store.state.today.getMonth(),this.$store.state.today.getDate(),0,0,0);
+      //const limitday = new Date(this.boxtask.date.getFullYear(),this.boxtask.date.getMonth(),this.boxtask.date.getDate(),0,0,0);
+      //this.leftdays = parseInt((limitday - today)/ 1000 / 60 / 60 / 24);
+  },
   methods:{
     changeDone(){
       this.$store.dispatch('changeDoneTask',this.boxtask.id);
     },
     toEditTask(){
-      this.$router.push({name:'edittask',params:{boxtask:this.boxtask}});
+      this.$router.push({name:'edittask',params:{boxtask:this.boxtask,archivemode:this.archivemode}});
     }
   }
 }
@@ -70,10 +79,10 @@ export default{
 .flexbox1{
   display: flex;
   flex-direction: column;
-  text-align: left;
-  margin-left: 15px;
-  margin-right: 7px;
-  width:40px;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 4px;
+  width:55px;
 }
 .flexbox2{
   display: flex;

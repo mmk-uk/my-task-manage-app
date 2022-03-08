@@ -129,7 +129,7 @@ import {ja} from 'vuejs-datepicker/dist/locale';
 
 
 export default {
-    props:["boxevent"],
+    props:["boxevent","archivemode"],
     components:{
         'vue-timepicker': VueTimepicker,
         'date-picker':Datepicker,
@@ -172,7 +172,7 @@ export default {
                             end_date : limitdate2,
                             end_time_flag : true
                         }
-                        this.$store.dispatch('updateEvents',newevent);
+                        this.$store.dispatch('updateReminds',newevent);
                         this.$router.push('/main');
                     }else{
                         this.$router.push('/main');
@@ -194,7 +194,7 @@ export default {
                             end_date : limitdate4,
                             end_time_flag : false
                         }
-                        this.$store.dispatch('updateEvents',newevent);
+                        this.$store.dispatch('updateReminds',newevent);
                         this.$router.push('/main');
                     }else{
                         this.$router.push('/main');
@@ -209,12 +209,20 @@ export default {
             this.$modal.hide('delete-event-modal');
         },
         deleteEvent(){
-            this.$store.dispatch('deleteEvent',this.boxevent.id);
+            this.$store.dispatch('deleteRemind',this.boxevent.id);
             this.$modal.hide('delete-event-modal');
-            this.$router.push('/main');
+            if(this.archivemode){
+                this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+            }else{
+                this.$router.push('/main');
+            }
         },
         toMainView(){
-            this.$router.push('/main');
+            if(this.archivemode){
+                this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+            }else{
+                this.$router.push('/main');
+            }
         }
     }
 }
