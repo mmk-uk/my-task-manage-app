@@ -75,7 +75,7 @@
                 @slidePrevTransitionEnd="swipePrevEnd"
             >
                 <swiper-slide>
-                        <ListDisplay :slideNum=0 :categorytitle="'全て'" :myreminds="myreminds"></ListDisplay>
+                        <ListDisplay :slideNum=0 :categorytitle="'すべて'" :myreminds="myreminds"></ListDisplay>
                 </swiper-slide>
                 <swiper-slide v-for="(category) in $store.state.categorys" :key="category['order_num']">
                         <ListDisplay :slideNum="category['order_num']" :categorytitle="category['title']" :myreminds="myreminds.filter(v => v.category_id == category.id).sort(compareDate)"></ListDisplay>
@@ -134,14 +134,13 @@ export default {
 
 
         
-        if(this.$store.state.categorys.length == 0){
-            console.log("カテゴリ読み込み")
+        if(this.$store.state.categorys.length == 0){          
             this.$store.dispatch('getCategorys')
         }
         if(this.$store.state.reminds.length == 0){
-            console.log("リマインズ読み込み")
             this.$store.dispatch('getReminds')
         }
+        
         
         /*
         this.$nextTick(function() {
@@ -166,9 +165,12 @@ export default {
         this.$refs.swiperTop.$swiper.slideTo(this.$store.state.ListNum);
         this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
         this.$store.commit('changeListNum',this.selectedIndex);
+        
         this.$nextTick(function() {
             this.myreminds = this.$store.state.reminds.sort(this.compareDate);
+            //this.myreminds = this.$store.state.reminds;
         })
+        
 
         // window.addEventListener("popstate", this.handlePopstate);
 

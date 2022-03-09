@@ -40,17 +40,17 @@
                     </div>
             
             
-            <div v-if="myreminds.length > 0">
-                <span style="font-weight: bold;font-size:110%">{{myreminds[0].date.getMonth()+1}}月 </span><span style="font-size:60%">{{myreminds[0].date.getFullYear()}}年</span>
+            <div v-if="myreminds.filter(firstRemindfilter).length > 0">
+                <span style="font-weight: bold;font-size:110%">{{myreminds.filter(firstRemindfilter).reverse()[0].date.getMonth()+1}}月 </span><span style="font-size:60%">{{myreminds.filter(firstRemindfilter).reverse()[0].date.getFullYear()}}年</span>
                 <el-divider ></el-divider>
             </div>
             
 
-            <div v-for="(remind,i) in myreminds" :key="remind.id">
+            <div v-for="(remind,i) in myreminds.filter(firstRemindfilter).reverse()" :key="remind.id">
 
                 <template v-if="remind.type == 'task'">
                 <template  v-if="i != 0" >
-                        <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
+                        <div v-if="remind.date.getMonth() != myreminds.filter(firstRemindfilter).reverse()[i-1].date.getMonth()" class="month-label">
                             <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
                             <el-divider ></el-divider>
                         </div>
@@ -59,7 +59,7 @@
                     <el-row style="height: 75px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 75px;">
                             <template  v-if="i != 0">
-                                <div v-if="!(remind.date.getFullYear() == myreminds[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox1">
+                                <div v-if="!(remind.date.getFullYear() == myreminds.filter(firstRemindfilter).reverse()[i-1].date.getFullYear() && remind.date.getMonth() == myreminds.filter(firstRemindfilter).reverse()[i-1].date.getMonth() && remind.date.getDate() == myreminds.filter(firstRemindfilter).reverse()[i-1].date.getDate())" class="flexbox1">
                                     <span style="font-weight: bold">{{remind.date.getDate()}}</span>
                                     <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
                                 </div>
@@ -83,7 +83,7 @@
                 
                 <div v-if="remind.type == 'event'" class="list-box">
                 <template  v-if="i != 0">
-                        <div v-if="remind.date.getMonth() != myreminds[i-1].date.getMonth()" class="month-label">
+                        <div v-if="remind.date.getMonth() != myreminds.filter(firstRemindfilter).reverse()[i-1].date.getMonth()" class="month-label">
                             <span style="font-weight: bold;font-size:110%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:60%">{{remind.date.getFullYear()}}年</span>
                             <el-divider ></el-divider>
                         </div>
@@ -91,7 +91,7 @@
                     <el-row style="height: 60px; margin-bottom: 8px;">
                         <el-col :span="2" style="height: 60px;">
                             <template  v-if="i != 0">
-                                <div v-if="!(remind.date.getFullYear() == myreminds[i-1].date.getFullYear() && remind.date.getMonth() == myreminds[i-1].date.getMonth() && remind.date.getDate() == myreminds[i-1].date.getDate())" class="flexbox2">
+                                <div v-if="!(remind.date.getFullYear() == myreminds.filter(firstRemindfilter).reverse()[i-1].date.getFullYear() && remind.date.getMonth() == myreminds.filter(firstRemindfilter).reverse()[i-1].date.getMonth() && remind.date.getDate() == myreminds.filter(firstRemindfilter).reverse()[i-1].date.getDate())" class="flexbox2">
                                     <span style="font-weight: bold">{{remind.date.getDate()}}</span>
                                     <span style="font-size:70%">({{dateT[remind.date.getDay()]}})</span>
                                 </div>
@@ -164,7 +164,12 @@ export default {
             this.$router.push('/main');
         },
         firstRemindfilter(remind){
-            return this.calcLeftdays(remind) < 0 && remind.done_task == true
+            if(remind.type == 'task'){
+                return this.calcLeftdays(remind) < 0 && remind.done_task == true
+            }
+            if(remind.type == 'event'){
+                return this.calcLeftdays(remind) < 0 
+            }
         }
     }
 }

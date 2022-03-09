@@ -82,6 +82,8 @@ export default new Vuex.Store({
         querySnapshot.forEach((doc) => {
             commit('newCategorys',{id: doc.data().id, title:doc.data().title, order_num:doc.data().order_num})
         });
+        console.log("カテゴリ読み込み")
+        console.log(state.categorys)
       }
     },
     async addCategorys({ commit, state }, newcategorytitle){
@@ -165,6 +167,7 @@ export default new Vuex.Store({
             }
         });
       }
+      console.log("リマインド読み込み")
       console.log(state.reminds)
     },
     async addReminds({ commit, state }, newremind){

@@ -12,7 +12,7 @@
                 <span style="margin-top: 2px;font-size:70%;opacity: 0.7">{{$store.state.categorys.find(c => c.id == boxevent.category_id).title}}</span>
             </div>
             <div v-else class="flexbox2">
-                <span style="margin-top: 15px;">{{boxevent.title}}</span>
+                <span style="margin-top: 17px;">{{boxevent.title}}</span>
             </div>
             <div class="flexbox3">
                 <el-button circle  size="mini" class="my-button" @click="toEditEvent">

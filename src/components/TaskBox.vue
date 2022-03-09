@@ -1,6 +1,6 @@
 <template>
     <div class="task">
-        <div class="box-card" v-bind:style="{background:taskColor(boxtask.done_task,leftdays)}">
+        <div class="box-card" v-bind:style="{background:taskColor(leftdays)}" ref="boxcolor">
 
             <div v-if="leftdays < 0" class="flexbox1">
                 
@@ -13,23 +13,23 @@
             </div>
             
             <div v-if="slideNum == 0" class="flexbox2">
-                <span v-if="boxtask.limit_time_flag" style="margin-top: 3px;font-size:50%">〜{{formatDate(boxtask.date, 'HH:mm')}}</span>
-                <span v-if="boxtask.limit_time_flag" style="margin-top: 3px;font-size:110%">{{boxtask.title}}</span>
-                <span v-if="!boxtask.limit_time_flag" style="margin-top: 15px;font-size:110%">{{boxtask.title}}</span>
-                <span  style="margin-top: 3px;font-size:80%;opacity: 0.7">{{$store.state.categorys.find(c => c.id == boxtask.category_id).title}}</span>
+                <span v-if="mytask.limit_time_flag" style="margin-top: 3px;font-size:50%">〜{{formatDate(mytask.date, 'HH:mm')}}</span>
+                <span v-if="mytask.limit_time_flag" style="margin-top: 3px;font-size:110%">{{mytask.title}}</span>
+                <span v-if="!mytask.limit_time_flag" style="margin-top: 15px;font-size:110%">{{mytask.title}}</span>
+                <span  style="margin-top: 1px;font-size:80%;opacity: 0.7">{{$store.state.categorys.find(c => c.id == mytask.category_id).title}}</span>
             </div>
 
             <div v-else class="flexbox2">
-                <span v-if="boxtask.limit_time_flag" style="margin-top: 5px;font-size:50%">〜{{formatDate(boxtask.date, 'HH:mm')}}</span>
-                <span v-if="boxtask.limit_time_flag" style="margin-top: 9px;font-size:110%">{{boxtask.title}}</span>
-                <span v-if="!boxtask.limit_time_flag" style="margin-top: 23px;font-size:110%">{{boxtask.title}}</span>
+                <span v-if="mytask.limit_time_flag" style="margin-top: 5px;font-size:50%">〜{{formatDate(mytask.date, 'HH:mm')}}</span>
+                <span v-if="mytask.limit_time_flag" style="margin-top: 9px;font-size:110%">{{mytask.title}}</span>
+                <span v-if="!mytask.limit_time_flag" style="margin-top: 23px;font-size:110%">{{mytask.title}}</span>
             </div>       
             <div class="flexbox3">
                 <div style="margin-top: 5px;">
-                  <el-button v-if="!boxtask.done_task" circle  size="mini" class="my-button" @click="changeDone">
+                  <el-button v-if="!mytask.done_task" circle  size="mini" class="my-button" @click="changeDone()">
                     <mdicon name="checkbox-blank-outline" size="25" />
                   </el-button>
-                  <el-button v-if="boxtask.done_task" circle  size="mini" class="my-button" @click="changeDone">
+                  <el-button v-if="mytask.done_task" circle  size="mini" class="my-button" @click="changeDone()">
                     <mdicon name="checkbox-marked-outline" size="25" />
                   </el-button>
                 </div>
@@ -53,6 +53,7 @@ export default{
   props:["slideNum","boxtask","leftdays","archivemode"],
   data(){
     return{
+      mytask:this.boxtask
     }
   },
   created(){
@@ -72,10 +73,26 @@ export default{
         return format;
     },
     changeDone(){
-      this.$store.dispatch('changeDoneTask',this.boxtask.id);
+      this.$store.dispatch('changeDoneTask',this.mytask.id);
+      /*
+      if(this.boxtask.done_task){
+        this.$refs.boxcolor.style.background = "#AAAAAA";
+      }else{
+        if(leftdays <= 1){
+          this.$refs.boxcolor.style.background = "#F38BA0";
+        }else if(leftdays <= 7){
+          this.$refs.boxcolor.style.background = "#FFBCBC";
+        }else{
+          this.$refs.boxcolor.style.background = "#CDF0EA";
+        }
+      }
+      */
+
+      //this.$store.dispatch('changeDoneTask',task.id);
+      //task.done_task = !task.done_task
     },
-    taskColor(done,leftdays){
-      if(done){
+    taskColor(leftdays){
+      if(this.mytask.done_task){
         return "#AAAAAA";
       }else{
         if(leftdays <= 1){
