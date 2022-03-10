@@ -1,11 +1,14 @@
 <template>
     <div class="event-box">
         <div class="box-card">
-            <div class="flexbox1">
+            
+            <div v-if="boxevent.start_time_flag" class="flexbox1">
                 <span v-if="boxevent.end_time_flag" style="margin-top: 12px;">{{formatDate(boxevent.date, 'HH:mm')}}</span>
                 <span v-if="boxevent.end_time_flag" style="margin-top: 2px;font-size:70%">{{formatDate(boxevent.end_date, 'HH:mm')}}</span>
                 <span v-if="!boxevent.end_time_flag" style="margin-top: 18px;">{{formatDate(boxevent.date, 'HH:mm')}}</span>
             </div>
+            
+            <div  v-if="!boxevent.start_time_flag" style="width:8px;"></div>
             <div class="line" v-bind:style="{background:eventColor(leftdays)}"></div>
             <div v-if="slideNum == 0" class="flexbox2">
                 <span style="margin-top: 10px;">{{boxevent.title}}</span>

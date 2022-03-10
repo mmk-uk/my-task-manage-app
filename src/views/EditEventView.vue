@@ -70,20 +70,37 @@
                     </date-picker>   
                 </div>
                 <div  class="add-form-slide" style="margin-top:15px;display:flex;">
-                    <div style="margin-top:4px;margin-right:5px;">
+                    <div v-if="!eventtimestart" style="margin-top:4px;margin-right:5px;">
                         <mdicon  name="clock-outline" size="30" />
-                    </div>      
-                    <vue-timepicker
-                        v-model="eventstarttime"
-                        placeholder="開始時間"
-                    >   
-                    </vue-timepicker>   
+                    </div>
+                    <div v-if="eventtimestart" style="width:30px;margin-top:4px;margin-right:5px;">
+                    </div>   
+                    <div style="margin:7px;">
+                        <el-switch v-model="eventtimestart">
+                        </el-switch>   
+                    </div> 
+
                 </div>
                 <div  class="add-form-slide" style="margin-top:15px;display:flex;">
-                    <div style="margin-top:4px;margin-right:5px;">
+                    <div v-if="eventtimestart" style="margin-top:4px;margin-right:5px;">
+                        <mdicon  name="clock-outline" size="30" />
+                    </div>    
+                    <vue-timepicker
+                        v-if="eventtimestart"
+                        v-model="eventstarttime"
+                        placeholder="開始時間"
+                        hour-label="時"
+                        minute-label="分"
+                    >   
+                    </vue-timepicker>   
+
+
+                </div>
+                <div v-if="eventtimestart" class="add-form-slide" style="margin-top:15px;display:flex;">
+                    <div  style="margin-top:4px;margin-right:5px;">
                         <mdicon  name="arrow-down-thin" size="30" />
-                    </div>      
-                    <div style="margin:7px;">
+                    </div>
+                    <div  style="margin:7px;">
                         <el-switch v-model="eventtimeend">
                         </el-switch>   
                     </div>
@@ -95,9 +112,12 @@
                     <vue-timepicker
                         v-model="eventendtime"
                         placeholder="終了時間"
+                        hour-label="時"
+                        minute-label="分"
                     >   
                     </vue-timepicker>     
                 </div>
+
 
                 <div style="margin-top:30px; display: flex;">
                     <div style="text-align:left;width:100%;margin-left:35px">
@@ -138,6 +158,7 @@ export default {
     data(){
         return{
             ja: ja,
+            eventtimestart:false,
             eventtimeend:false,
             eventtitle:'',
             eventdate:null,
@@ -151,63 +172,101 @@ export default {
     created(){
         this.eventtitle = this.boxevent.title
         this.eventdate = this.boxevent.date
-        this.eventstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes()) 
-        if (this.boxevent.end_time_flag){
-            this.eventtimeend = this.boxevent.end_time_flag
-            this.eventendtime = ((this.boxevent.end_date.getHours() < 10)? "0"+this.boxevent.end_date.getHours() : this.boxevent.end_date.getHours()) + ":" + ((this.boxevent.end_date.getMinutes() < 10)? "0"+this.boxevent.end_date.getMinutes() : this.boxevent.end_date.getMinutes()) 
+        if(this.boxevent.start_time_flag){
+            this.eventtimestart = this.boxevent.start_time_flag
+            this.eventstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes()) 
+            if (this.boxevent.end_time_flag){
+                this.eventtimeend = this.boxevent.end_time_flag
+                this.eventendtime = ((this.boxevent.end_date.getHours() < 10)? "0"+this.boxevent.end_date.getHours() : this.boxevent.end_date.getHours()) + ":" + ((this.boxevent.end_date.getMinutes() < 10)? "0"+this.boxevent.end_date.getMinutes() : this.boxevent.end_date.getMinutes()) 
+            }
         }
     },
     methods:{
         updateEvent(){
-            if(this.eventtimeend){
-                if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime && this.eventendtime){   
-                    const newstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes());
-                    const newendtime = ((this.boxevent.end_date.getHours() < 10)? "0"+this.boxevent.end_date.getHours() : this.boxevent.end_date.getHours()) + ":" + ((this.boxevent.end_date.getMinutes() < 10)? "0"+this.boxevent.end_date.getMinutes() : this.boxevent.end_date.getMinutes());
-                    if((this.eventtitle != this.boxevent.title) || (this.eventdate != this.boxevent.date) || ((typeof(this.eventstarttime) == 'string'?this.eventstarttime:this.eventstarttime.HH + ":" + this.eventstarttime.mm)!= newstarttime) || ((typeof(this.eventendtime) == 'string'?this.eventendtime:this.eventendtime.HH + ":" + this.eventendtime.mm) != newendtime) || (this.eventtimeend != this.boxevent.end_time_flag)){
-                        console.log(this.eventstarttime,this.eventendtime)
+            if(this.eventtimestart){
+                if(this.eventtimeend){
+                    if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime && this.eventendtime){   
+                        const newstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes());
+                        const newendtime = ((this.boxevent.end_date.getHours() < 10)? "0"+this.boxevent.end_date.getHours() : this.boxevent.end_date.getHours()) + ":" + ((this.boxevent.end_date.getMinutes() < 10)? "0"+this.boxevent.end_date.getMinutes() : this.boxevent.end_date.getMinutes());
+                        if((this.eventtitle != this.boxevent.title) || (this.eventdate != this.boxevent.date) || ((typeof(this.eventstarttime) == 'string'?this.eventstarttime:this.eventstarttime.HH + ":" + this.eventstarttime.mm)!= newstarttime) || ((typeof(this.eventendtime) == 'string'?this.eventendtime:this.eventendtime.HH + ":" + this.eventendtime.mm) != newendtime)|| (this.eventtimestart != this.boxevent.start_time_flag) || (this.eventtimeend != this.boxevent.end_time_flag)){
+                            console.log(this.eventstarttime,this.eventendtime)
 
-                        console.log(typeof(this.eventstarttime),typeof(this.eventendtime))
-                        var limitdate1 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),59);
-                        var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[0]:this.eventendtime.HH),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[1]:this.eventendtime.mm),59);
+                            console.log(typeof(this.eventstarttime),typeof(this.eventendtime))
+                            var limitdate1 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),59);
+                            var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[0]:this.eventendtime.HH),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[1]:this.eventendtime.mm),59);
 
-                        const newevent = {
-                            type : "event",
-                            id : this.boxevent.id,
-                            category_id : this.boxevent.category_id,
-                            title : this.eventtitle,
-                            date : limitdate1,
-                            end_date : limitdate2,
-                            end_time_flag : true
-                        }
-                        this.$store.dispatch('updateReminds',newevent);
-                        if(this.archivemode){
-                            this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                            const newevent = {
+                                type : "event",
+                                id : this.boxevent.id,
+                                category_id : this.boxevent.category_id,
+                                title : this.eventtitle,
+                                date : limitdate1,
+                                start_time_flag : true,
+                                end_date : limitdate2,
+                                end_time_flag : true
+                            }
+                            this.$store.dispatch('updateReminds',newevent);
+                            if(this.archivemode){
+                                this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                            }else{
+                                this.$router.push('/main');
+                            }
                         }else{
-                            this.$router.push('/main');
+                            if(this.archivemode){
+                                this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                            }else{
+                                this.$router.push('/main');
+                            }
                         }
-                    }else{
-                        if(this.archivemode){
-                            this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                    }
+                }else{
+                    if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime ){    
+                        const newstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes());
+                        if((this.eventtitle != this.boxevent.title) || (this.eventdate != this.boxevent.date) || ((typeof(this.eventstarttime) == 'string'?this.eventstarttime:this.eventstarttime.HH + ":" + this.eventstarttime.mm) != newstarttime) || (this.eventtimestart != this.boxevent.start_time_flag) || (this.eventtimeend != this.boxevent.end_time_flag)){
+                            console.log(this.eventstarttime,this.eventendtime)
+                            var limitdate3 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),59);
+                            var limitdate4 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
+
+                            const newevent = {
+                                type : "event",
+                                id : this.boxevent.id,
+                                category_id : this.boxevent.category_id,
+                                title : this.eventtitle,
+                                date : limitdate3,
+                                start_time_flag : true,
+                                end_date : limitdate4,
+                                end_time_flag : false
+                            }
+                            this.$store.dispatch('updateReminds',newevent);
+                            if(this.archivemode){
+                                this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                            }else{
+                                this.$router.push('/main');
+                            }
                         }else{
-                            this.$router.push('/main');
+                            if(this.archivemode){
+                                this.$router.push({name:'archive',params:{slideNum:this.$store.state.ListNum,categorytitle:this.$store.state.categorys[this.$store.state.ListNum - 1].title,myreminds:this.$store.state.reminds.filter(v => v.category_id == this.$store.state.categorys[this.$store.state.ListNum - 1].id).sort(this.compareDate)}});
+                            }else{
+                                this.$router.push('/main');
+                            }
                         }
                     }
                 }
             }else{
-                if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime ){    
-                    const newstarttime = ((this.boxevent.date.getHours() < 10)? "0"+this.boxevent.date.getHours() : this.boxevent.date.getHours()) + ":" + ((this.boxevent.date.getMinutes() < 10)? "0"+this.boxevent.date.getMinutes() : this.boxevent.date.getMinutes());
-                    if((this.eventtitle != this.boxevent.title) || (this.eventdate != this.boxevent.date) || ((typeof(this.eventstarttime) == 'string'?this.eventstarttime:this.eventstarttime.HH + ":" + this.eventstarttime.mm) != newstarttime)|| (this.eventtimeend != this.boxevent.end_time_flag)){
+                if(this.eventtitle.length>0 && this.eventdate){  
+                    if((this.eventtitle != this.boxevent.title) || (this.eventdate != this.boxevent.date)|| (this.eventtimestart != this.boxevent.start_time_flag) || (this.eventtimeend != this.boxevent.end_time_flag)){
                         console.log(this.eventstarttime,this.eventendtime)
-                        var limitdate3 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),59);
-                        var limitdate4 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
+                        var limitdate5 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
+                        var limitdate6 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
 
                         const newevent = {
                             type : "event",
                             id : this.boxevent.id,
                             category_id : this.boxevent.category_id,
                             title : this.eventtitle,
-                            date : limitdate3,
-                            end_date : limitdate4,
+                            date : limitdate5,
+                            start_time_flag : false,
+                            end_date : limitdate6,
                             end_time_flag : false
                         }
                         this.$store.dispatch('updateReminds',newevent);
@@ -225,6 +284,7 @@ export default {
                     }
                 }
             }
+
         },
         showDeleteEventModal(){
             this.$modal.show('delete-event-modal');

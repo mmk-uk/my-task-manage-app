@@ -162,6 +162,7 @@ export default new Vuex.Store({
                 category_id : doc.data().category_id,
                 title : doc.data().title,
                 date : doc.data().date.toDate(),
+                start_time_flag : doc.data().start_time_flag,
                 end_time_flag : doc.data().end_time_flag,
                 end_date :doc.data().end_date.toDate()
               }
@@ -196,6 +197,7 @@ export default new Vuex.Store({
             title :  newremind.title,
             date :  Timestamp.fromDate(newremind.date),
             end_date : Timestamp.fromDate(newremind.end_date),
+            start_time_flag : newremind.start_time_flag,
             end_time_flag : newremind.end_time_flag
           }
           await setDoc(remindRef,addnewevent);
@@ -217,6 +219,7 @@ export default new Vuex.Store({
         const changenewevent = {
           title : newremind.title,
           date :  Timestamp.fromDate(newremind.date),
+          start_time_flag : newremind.start_time_flag,
           end_date : Timestamp.fromDate(newremind.end_date),
           end_time_flag : newremind.end_time_flag
         }

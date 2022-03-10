@@ -70,17 +70,20 @@
                             </date-picker>         
                         </div>
                         <div  class="add-form-slide" style="margin-top:15px;display:flex;">
-                            <div style="margin-top:4px;margin-right:5px;">
+                            <div v-if="!tasktimeset" style="margin-top:4px;margin-right:5px;">
                                 <mdicon  name="clock-outline" size="30" />
-                            </div>      
+                            </div>
+                            <div v-if="tasktimeset" style="width:30px;margin-top:4px;margin-right:5px;">
+                            </div>          
                             <div style="margin:7px;">
                                 <el-switch v-model="tasktimeset">
                                 </el-switch>   
                             </div>
                         </div>
                         <div  class="add-form-slide" style="margin-top:15px;display:flex;">
-                            <div style="width:30px;margin-top:4px;margin-right:5px;">
-                            </div>       
+                            <div v-if="tasktimeset" style="margin-top:4px;margin-right:5px;">
+                                <mdicon  name="clock-outline" size="30" />
+                            </div>      
                             <vue-timepicker
                                 v-if="tasktimeset"
                                 v-model="tasktime"
@@ -117,7 +120,7 @@
                         <div  class="add-form-slide" style="margin-top:15px;display:flex;">
                             <div style="margin-top:4px;margin-right:5px;">
                                 <mdicon  name="calendar-outline" size="30" />
-                            </div>               
+                            </div>
                             <date-picker
                                 placeholder="予定日"
                                 v-model="eventdate"
@@ -129,24 +132,37 @@
                             </date-picker>   
                         </div>
                         <div  class="add-form-slide" style="margin-top:15px;display:flex;">
-                            <div style="margin-top:4px;margin-right:5px;">
+                            <div v-if="!eventtimestart" style="margin-top:4px;margin-right:5px;">
                                 <mdicon  name="clock-outline" size="30" />
-                            </div>      
+                            </div>
+                            <div v-if="eventtimestart" style="width:30px;margin-top:4px;margin-right:5px;">
+                            </div>   
+                            <div style="margin:7px;">
+                                <el-switch v-model="eventtimestart">
+                                </el-switch>   
+                            </div> 
+
+                        </div>
+                        <div  class="add-form-slide" style="margin-top:15px;display:flex;">
+                            <div v-if="eventtimestart" style="margin-top:4px;margin-right:5px;">
+                                <mdicon  name="clock-outline" size="30" />
+                            </div>    
                             <vue-timepicker
+                                v-if="eventtimestart"
                                 v-model="eventstarttime"
                                 placeholder="開始時間"
                                 hour-label="時"
                                 minute-label="分"
-                                :blur-delay="0"
-                                @blur="closeTimeset"
                             >   
                             </vue-timepicker>   
+
+
                         </div>
-                        <div  class="add-form-slide" style="margin-top:15px;display:flex;">
-                            <div style="margin-top:4px;margin-right:5px;">
+                        <div v-if="eventtimestart" class="add-form-slide" style="margin-top:15px;display:flex;">
+                            <div  style="margin-top:4px;margin-right:5px;">
                                 <mdicon  name="arrow-down-thin" size="30" />
-                            </div>      
-                            <div style="margin:7px;">
+                            </div>
+                            <div  style="margin:7px;">
                                 <el-switch v-model="eventtimeend">
                                 </el-switch>   
                             </div>
@@ -160,8 +176,6 @@
                                 placeholder="終了時間"
                                 hour-label="時"
                                 minute-label="分"
-                                :blur-delay="0"
-                                @blur="closeTimeset"
                             >   
                             </vue-timepicker>     
                         </div>
@@ -215,6 +229,7 @@ export default {
             ja: ja,
             
             tasktimeset: false,
+            eventtimestart:false,
             eventtimeend:false,
             tasktitle:'',
             taskdate:null,
@@ -283,47 +298,79 @@ export default {
             }
         },
         addEvent(){
-            if (this.eventtimeend) {
-                if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime && this.eventendtime){     
-                    var limitdate1 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),59);
-                    var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[0]:this.eventendtime.HH),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[1]:this.eventendtime.mm),59);
+            if(this.eventtimestart){
+                if (this.eventtimeend) {
+                    if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime && this.eventendtime){     
+                        var limitdate1 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),59);
+                        var limitdate2 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[0]:this.eventendtime.HH),Number(typeof(this.eventendtime) == 'string'?this.eventendtime.split(':')[1]:this.eventendtime.mm),59);
 
-                    const newevent = {
-                        type : "event",
-                        id : uuidv4(),
-                        category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
-                        title : this.eventtitle,
-                        date : limitdate1,
-                        end_date : limitdate2,
-                        end_time_flag : true
+                        const newevent = {
+                            type : "event",
+                            id : uuidv4(),
+                            category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
+                            title : this.eventtitle,
+                            date : limitdate1,
+                            start_time_flag : true,
+                            end_date : limitdate2,
+                            end_time_flag : true
+                        }
+                        this.$store.dispatch('addReminds',newevent);
+                        this.$router.push('/main');
                     }
-                    this.$store.dispatch('addReminds',newevent);
-                    this.$router.push('/main');
+                }else{
+                    if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime ){     
+                        var limitdate3 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),0);
+                        var limitdate4 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
+
+                        const newevent = {
+                            type : "event",
+                            id : uuidv4(),
+                            category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
+                            title : this.eventtitle,
+                            date : limitdate3,
+                            start_time_flag : true,
+                            end_date : limitdate4,
+                            end_time_flag : false
+                        }
+                        this.$store.dispatch('addReminds',newevent);
+                        this.$router.push('/main');
+                    }
                 }
             }else{
-                if(this.eventtitle.length>0 && this.eventdate && this.eventstarttime ){     
-                    var limitdate3 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[0]:this.eventstarttime.HH),Number(typeof(this.eventstarttime) == 'string'?this.eventstarttime.split(':')[1]:this.eventstarttime.mm),0);
-                    var limitdate4 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
 
-                    const newevent = {
-                        type : "event",
-                        id : uuidv4(),
-                        category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
-                        title : this.eventtitle,
-                        date : limitdate3,
-                        end_date : limitdate4,
-                        end_time_flag : false
+                    if(this.eventtitle.length>0 && this.eventdate){     
+                        var limitdate5 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
+                        var limitdate6 = new Date(this.eventdate.getFullYear(),this.eventdate.getMonth(),this.eventdate.getDate(),23,59,59);
+
+                        const newevent = {
+                            type : "event",
+                            id : uuidv4(),
+                            category_id : this.$store.state.categorys[this.$store.state.ListNum-1].id,
+                            title : this.eventtitle,
+                            date : limitdate5,
+                            start_time_flag : false,
+                            end_date : limitdate6,
+                            end_time_flag : false
+                        }
+                        this.$store.dispatch('addReminds',newevent);
+                        this.$router.push('/main');
                     }
-                    this.$store.dispatch('addReminds',newevent);
-                    this.$router.push('/main');
-                }
             }
+
+
         },
         closeTimeset(){
             console.log("閉じた!")
         }
         
         
+    },
+    watch:{
+         eventtimestart(newv){
+             if(newv == false){
+                 this.eventtimeend = false
+             }
+         }
     }
 }
 
