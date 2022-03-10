@@ -9,7 +9,9 @@
             </div>
             <div v-else class="flexbox1">
                 <span style="margin-top: 16px;;font-size:70%">あと</span>
-                <span style="margin-top: 0px;font-size:105%">{{leftdays}}日</span>
+
+                <span v-if="leftdays<100" style="margin-top: 0px;font-size:105%">{{leftdays}}日</span>
+                <span v-else style="margin-top: 0px;margin-left:-2px;font-size:85%">{{leftdays}}日</span>
             </div>
             
             <div v-if="slideNum == 0" class="flexbox2">

@@ -41,6 +41,23 @@ Vue.use(VModal);
 
 Vue.config.productionTip = false
 
+
+// イベント設定用関数
+function noScroll (event) { event.preventDefault() }
+
+// スクロール禁止
+Vue.prototype.$noScroll = function () {
+  // SP
+  document.addEventListener('touchmove', noScroll, { passive: false })
+}
+
+// スクロール禁止を解除
+Vue.prototype.$returnScroll = function () {
+  // SP
+  document.removeEventListener('touchmove', noScroll, { passive: false })
+}
+
+
 new Vue({
   router,
   store,

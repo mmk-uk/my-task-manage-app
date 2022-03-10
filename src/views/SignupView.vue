@@ -132,8 +132,8 @@ export default{
             }
             );
             const categoryid = uuidv4();
-            const taskid = uuidv4();
-            const eventid = uuidv4();
+            //const taskid = uuidv4();
+            //const eventid = uuidv4();
             //var hiduke = new Date();
             //hiduke.setDate(hiduke.getDate() + 3)
             //const kyou = {year:hiduke.getFullYear(),month:hiduke.getMonth()+1,day:hiduke.getDate()}
@@ -142,6 +142,7 @@ export default{
                 title: 'やること',
                 order_num: 1
             });
+            /*
             await setDoc(doc(db,'users',userid,'reminds',taskid),{
                 type:'task',
                 id: taskid,
@@ -160,6 +161,7 @@ export default{
                 end_time_flag : false,
                 end_date: new Date()
             });
+            */
         }
     },
     computed:{

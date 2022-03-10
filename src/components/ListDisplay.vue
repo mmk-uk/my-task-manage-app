@@ -39,7 +39,7 @@
                 <template v-if="remind.type == 'task' ">
                     <template  v-if="i != 0">
                             <div v-if="remind.date.getMonth() != myreminds.filter(firstRemindfilter)[i-1].date.getMonth()" class="month-label">
-                                <span style="font-weight: bold;font-size:140%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:70%"></span>
+                                <span style="font-weight: bold;font-size:150%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:70%"></span>
                                 <el-divider ></el-divider>
                             </div>
                     </template>
@@ -73,7 +73,7 @@
                 <div v-if="remind.type == 'event'" class="list-box">
                     <template  v-if="i != 0">
                             <div v-if="remind.date.getMonth() != myreminds.filter(firstRemindfilter)[i-1].date.getMonth()" class="month-label">
-                                <span style="font-weight: bold;font-size:140%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:70%"></span>
+                                <span style="font-weight: bold;font-size:150%">{{remind.date.getMonth()+1}}月 </span><span style="font-size:70%"></span>
                                 <el-divider ></el-divider>
                             </div>
                     </template>
@@ -126,14 +126,7 @@ export default {
     },
     data(){
         return{
-            dateT : ["日","月","火","水","木","金","土"],
-            swiperOptionScroll:{   
-                direction: 'vertical',
-                mousewheel:true,
-                scrollContainer:true,
-                freeMode:true,
-                iOSEdgeSwipeDetection:true
-            }
+            dateT : ["日","月","火","水","木","金","土"]
         }
     },
     mounted(){

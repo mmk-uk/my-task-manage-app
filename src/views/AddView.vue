@@ -85,6 +85,8 @@
                                 v-if="tasktimeset"
                                 v-model="tasktime"
                                 placeholder="締切時間"
+                                hour-label="時"
+                                minute-label="分"
                             >   
                             </vue-timepicker>
                         </div>
@@ -133,6 +135,10 @@
                             <vue-timepicker
                                 v-model="eventstarttime"
                                 placeholder="開始時間"
+                                hour-label="時"
+                                minute-label="分"
+                                :blur-delay="0"
+                                @blur="closeTimeset"
                             >   
                             </vue-timepicker>   
                         </div>
@@ -152,6 +158,10 @@
                             <vue-timepicker
                                 v-model="eventendtime"
                                 placeholder="終了時間"
+                                hour-label="時"
+                                minute-label="分"
+                                :blur-delay="0"
+                                @blur="closeTimeset"
                             >   
                             </vue-timepicker>     
                         </div>
@@ -308,6 +318,9 @@ export default {
                     this.$router.push('/main');
                 }
             }
+        },
+        closeTimeset(){
+            console.log("閉じた!")
         }
         
         
@@ -453,6 +466,11 @@ export default {
     height: 40px;
 
 }
+
+.time-picker-overlay{
+    width: 200%;
+}
+
 .display-time{
     width: 85vw  !important;
     height: 40px !important;

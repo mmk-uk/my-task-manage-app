@@ -93,6 +93,8 @@ export default {
             const auth = getAuth();
             auth.signOut();
             localStorage.clear('userinfo');
+            this.$store.commit('initCategorys');
+            this.$store.commit('initReminds');
             this.$router.push("/");
         }
     }

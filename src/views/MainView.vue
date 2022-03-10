@@ -10,8 +10,8 @@
                             <mdicon name="menu" size="30" />
                         </el-button>
                     </el-col>
-                    <el-col :span="16" style="text-align: center; height: 60px; line-height: 135px;"> 
-                        <span style="font-size:110%;font-weight:bold">{{$store.state.today.getFullYear()}}年{{$store.state.today.getMonth()+1}}月{{$store.state.today.getDate()}}日</span>
+                    <el-col :span="16" style="text-align: center; height: 60px; line-height: 139px;"> 
+                        <span style="font-size:110%;font-weight:bold">{{$store.state.today.getFullYear()}}年{{$store.state.today.getMonth()+1}}月{{$store.state.today.getDate()}}日({{dateT[$store.state.today.getDay()]}})</span>
                     </el-col>
                     <el-col :span="4" style="text-align: right; height: 60px; line-height: 135px;"> 
                         <el-button type="primary" circle class="my-button" @click="toCategoryView">
@@ -63,7 +63,6 @@
 
          <!-- メイン -->   
             <swiper
-                
                 class="main-swiper"
                 :options="swiperOptionTop"
                 ref="swiperTop"
@@ -75,12 +74,44 @@
                 @slidePrevTransitionEnd="swipePrevEnd"
             >
                 <swiper-slide>
+                    <!--
+                        <template v-if="calendarmode">
+                            <CalendarView :slideNum=0 :categorytitle="'すべて'" :myreminds="myreminds"></CalendarView>
+                        </template>
+                        <template v-else>
+                        </template>
+                            -->
                         <ListDisplay :slideNum=0 :categorytitle="'すべて'" :myreminds="myreminds"></ListDisplay>
+                        
                 </swiper-slide>
                 <swiper-slide v-for="(category) in $store.state.categorys" :key="category['order_num']">
+                    <!--
+                        <template v-if="calendarmode">
+                            <CalendarView :slideNum="category['order_num']" :categorytitle="category['title']" :myreminds="myreminds.filter(v => v.category_id == category.id).sort(compareDate)"></CalendarView>
+                        </template>
+                        <template v-else>
+                            </template>
+                             -->
                         <ListDisplay :slideNum="category['order_num']" :categorytitle="category['title']" :myreminds="myreminds.filter(v => v.category_id == category.id).sort(compareDate)"></ListDisplay>
+                        
                 </swiper-slide>
             </swiper>
+
+        <!-- カレンダーボタン -->
+        <!--
+            <div class="bottom-left" v-if="calendarmode">
+                <el-button type="primary" circle class="add-button" @click="toListMode">
+                    <mdicon name="format-list-bulleted" size="40" />
+                </el-button>
+            </div>
+            <div class="bottom-left" v-else>
+                <el-button type="primary" circle class="add-button" @click="toCalendarMode">
+                    <mdicon name="calendar-month-outline" size="40" />
+                </el-button>
+            </div>
+        -->
+
+
 
         <!-- 追加ボタン -->
             <div class="bottom-right" v-if="selectedIndex != 0">
@@ -94,17 +125,21 @@
 
 <script>
 import ListDisplay from "@/components/ListDisplay";
+//import CalendarView from "@/views/CalendarView.vue";
 
 export default {
     components: {
-        ListDisplay
+        ListDisplay,
+        //CalendarView 
     },
     data(){
         return{
+            calendarmode:false,
             myreminds:[],
             categoryreminds:[],
             selectedIndex: 0,
             touchPointX:0,
+            dateT : ["日","月","火","水","木","金","土"],
             slides:[["スライド1",1],["スライド2",2],["スライド3",3],["スライド4",4],["スライド5",5],["スライド6",6],["スライド7",7],["スライド8",8]],
             swiperOptionTop: {
                 slidesPerView: 1,
@@ -255,6 +290,12 @@ export default {
         },
         compareDate(a,b){
             return a.date - b.date;
+        },
+        toCalendarMode(){
+            this.calendarmode = true
+        },
+        toListMode(){
+            this.calendarmode = false
         }
     },
     watch:{
@@ -377,6 +418,13 @@ export default {
 }
 
 
+.bottom-left{
+    z-index: 9999;
+
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+}
 
 .bottom-right{
      z-index: 9999;

@@ -69,7 +69,14 @@ const routes = [
     name: 'editevent',
     component: () => import('../views/EditEventView.vue'),
     props: true
+  },
+  {
+    path: '/calendar',
+    name: 'calendar',
+    component: () => import('../views/CalendarView.vue'),
+    props: true
   }
+  
 
 
   
@@ -89,7 +96,7 @@ router.beforeEach((to, from, next) => {
   const userinfo = JSON.parse(localStorage.getItem('userinfo')) || false;
   const isAuthenticated = userinfo?true:false;
 
-  if ((to.name == 'main' ||to.name == 'categorymanage' || to.name == 'add'|| to.name == 'archive'|| to.name == 'config' || to.name == 'edittask' || to.name == 'editevent') && !isAuthenticated){
+  if ((to.name == 'main' ||to.name == 'categorymanage' || to.name == 'add'|| to.name == 'archive'|| to.name == 'config' || to.name == 'edittask' || to.name == 'editevent'  || to.name == 'calendar') && !isAuthenticated){
     next({ name: 'title' })
   }
   else if ((to.name == 'title' || to.name == 'signin'|| to.name == 'signup'|| to.name == 'reset') && isAuthenticated){

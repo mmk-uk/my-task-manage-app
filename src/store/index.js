@@ -113,7 +113,7 @@ export default new Vuex.Store({
         commit('editCategory',newcategory);
         await updateDoc(doc(db,'users',state.userid,'categorys', category.id),{title:newcategorytitle});
     },
-    async deleteCategory({ commit, state }, category){
+    async deleteCategory({dispatch, commit, state }, category){
         const db = getFirestore();
         commit('removeCategory',category);
         await deleteDoc(doc(db,'users',state.userid,'categorys', category.id));
@@ -124,11 +124,13 @@ export default new Vuex.Store({
             )
         )
         const delitereminds = state.reminds.filter(remind => remind.category_id == category.id)
-        delitereminds.forEach(remind => commit('removeReminds',remind.id))
+        //delitereminds.forEach(remind => commit('removeReminds',remind.id))
+        console.log(delitereminds)
         await Promise.all(
           delitereminds.map(
             async remind => 
-              await deleteDoc(doc(db,'users',state.userid,'categorys', remind.id))
+              //await deleteDoc(doc(db,'users',state.userid,'categorys', remind.id))
+              dispatch('deleteRemind',remind.id)
             )
         )
     },
