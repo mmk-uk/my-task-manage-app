@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="main" @touchstart=" touchDisplay">
      
 
           <!-- ヘッダー -->
@@ -43,7 +43,6 @@
                             class="thumbs-swiper gallery-thumbs" 
                             ref="swiperThumbs"
                             @clickSlide="onSwiperClickSlide"
-                            @slideChange="swipeTab"
                         >
                             <swiper-slide>
 
@@ -175,6 +174,8 @@ export default {
         if(this.$store.state.reminds.length == 0){
             this.$store.dispatch('getReminds')
         }
+
+       
         
         
         /*
@@ -200,6 +201,10 @@ export default {
         this.$refs.swiperTop.$swiper.slideTo(this.$store.state.ListNum);
         this.selectedIndex = this.$refs.swiperTop.$swiper.activeIndex;
         this.$store.commit('changeListNum',this.selectedIndex);
+
+        setInterval(() => {
+                this.$store.commit('updateToday')
+            },1000);
         
         this.$nextTick(function() {
             this.myreminds = this.$store.state.reminds.sort(this.compareDate);
@@ -217,6 +222,7 @@ export default {
         //if(this.$store.state.ListNum){
             //this.$refs.swiperTop.$swiper.slideTo(this.$store.state.ListNum);
         //}
+       // console.log("アップデート")
     },
     methods:{
         onSwipe() {
@@ -285,8 +291,10 @@ export default {
 
             }
         },
-        swipeTab(){
+        touchDisplay(){
             //console.log(this.$refs.swiperThumbs.$swiper.activeIndex)
+            console.log("タッチ")
+            //if(this.$store.state.today )
         },
         compareDate(a,b){
             return a.date - b.date;
@@ -311,7 +319,8 @@ export default {
                 swiperTop.controller.control = swiperThumbs
 
             }
-        }
+        },
+
     }
 }
 </script>

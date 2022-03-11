@@ -14,10 +14,16 @@ export default new Vuex.Store({
     reminds:[]
   },
   getters: {
+    getToday: state => {
+      return state.today;
+    }
 
   },
 
   mutations: {
+    updateToday(state){
+      state.today = new Date()
+    },
     setUserID(state,id){
       state.userid = id;
     },
